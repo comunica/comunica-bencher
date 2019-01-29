@@ -1,0 +1,30 @@
+SELECT ?v0 ?v1 ?v2 WHERE {
+	?v0 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?v1 .
+	?v0 <http://schema.org/text> ?v2 .
+	<http://db.uwaterloo.ca/~galuc/wsdbm/User76894> <http://db.uwaterloo.ca/~galuc/wsdbm/likes> ?v0 .
+}
+
+SELECT ?v0 ?v1 ?v2 WHERE {
+	?v0 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?v1 .
+	?v0 <http://schema.org/text> ?v2 .
+	<http://db.uwaterloo.ca/~galuc/wsdbm/User95259> <http://db.uwaterloo.ca/~galuc/wsdbm/likes> ?v0 .
+}
+
+SELECT ?v0 ?v1 ?v2 WHERE {
+	?v0 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?v1 .
+	?v0 <http://schema.org/text> ?v2 .
+	<http://db.uwaterloo.ca/~galuc/wsdbm/User56863> <http://db.uwaterloo.ca/~galuc/wsdbm/likes> ?v0 .
+}
+
+SELECT ?v0 ?v1 ?v2 WHERE {
+	?v0 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?v1 .
+	?v0 <http://schema.org/text> ?v2 .
+	<http://db.uwaterloo.ca/~galuc/wsdbm/User56863> <http://db.uwaterloo.ca/~galuc/wsdbm/likes> ?v0 .
+}
+
+SELECT ?v0 ?v1 ?v2 WHERE {
+	?v0 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?v1 .
+	?v0 <http://schema.org/text> ?v2 .
+	<http://db.uwaterloo.ca/~galuc/wsdbm/User10176> <http://db.uwaterloo.ca/~galuc/wsdbm/likes> ?v0 .
+}
+

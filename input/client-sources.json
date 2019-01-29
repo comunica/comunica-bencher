@@ -1,0 +1,5 @@
+{
+    "sources": [
+        { "type": "hypermedia", "value": "http://server:3000/dataset" }
+    ]
+}
