@@ -1,0 +1,42 @@
+version: '3'
+services:
+    benchmark:
+        image: comunica/sparql-benchmark-runner
+        volumes:
+        - ./input/watdiv-10M/:/tmp/watdiv-10M/
+        - ./output/queries.csv:/tmp/output.csv
+        command: http://client:80/sparql /tmp/watdiv-10M/ -o /tmp/output.csv -r 5 -w 1
+        depends_on:
+        - server
+        - client
+    server:
+        image: linkeddatafragments/server.js
+        ports:
+        - "3000:3000"
+        volumes:
+        - ./input/dataset.hdt:/data/dataset.hdt
+        - ./input/server-config.json:/tmp/config.json
+        command: /tmp/config.json 3000 1
+        deploy:
+            mode: global
+    client:
+        image: comunica/actor-init-sparql
+        ports:
+        - "8080:80"
+        entrypoint:
+        - node
+        - ./bin/http.js
+        environment:
+            COMUNICA_CONFIG: /tmp/config.json
+        volumes:
+        - ./input/client-config.json:/tmp/config.json
+        - ./input/client-sources.json:/tmp/sources.json
+        command: /tmp/sources.json -p 80 -t 60000 -l info
+        links:
+            - server
+        deploy:
+            mode: replicated
+            restart_policy:
+                condition: none
+            replicas: 3
+
