@@ -5,7 +5,7 @@ services:
         volumes:
         - ./input/watdiv-10M/:/tmp/watdiv-10M/
         - ./output/queries.csv:/tmp/output.csv
-        command: http://client:80/sparql /tmp/watdiv-10M/ -o /tmp/output.csv -r 5 -w 1
+        command: http://client:80/sparql /tmp/watdiv-10M/ --output /tmp/output.csv --replication 5 --warmup 1
         depends_on:
         - server
         - client
