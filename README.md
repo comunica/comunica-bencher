@@ -25,7 +25,21 @@ Once the benchmark runner is done, the following files will be created:
 
 ## Configurability
 
-TODO: replication, warmup, server workers, timeout, ...
+With the `.env` file, you can configure your benchmark.
+The following options are available:
+
+| Key                    | Description |
+| ---------------------- | ----------- |
+| `QUERIES`              | A folder containing queries to execute.  |
+| `REPLICATION`          | The number of times the queries should be executed and averaged over. |
+| `WARMUP_ROUNDS`        | The number of times the queries should be executed as a warmup. |
+| `SERVER_DATASET`       | Path to an HDT file that will be loaded in the server as dataset. |
+| `SERVER_CONFIG`        | Path to an LDF server config file. |
+| `SERVER_WORKERS`       | The number of workers the LDF server will have. |
+| `CLIENTS`              | The number of concurrent clients. |
+| `CLIENT_CONFIG`        | Path to a Comunica config file. |
+| `CLIENT_QUERY_SOURCES` | Path to a JSON config file containing Comunica context, containing the sources that need to be queried. |
+| `CLIENT_TIMEOUT`       | The query timeout in milliseconds. |
 
 ## License
 This code is copyrighted by [Ghent University – imec](http://idlab.ugent.be/)
