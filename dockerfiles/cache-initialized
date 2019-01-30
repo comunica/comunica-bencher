@@ -1,0 +1,4 @@
+FROM nginx:stable
+
+ADD ./input/nginx-default /etc/nginx/sites-enabled/default
+ADD ./input/nginx.conf /etc/nginx/nginx.conf

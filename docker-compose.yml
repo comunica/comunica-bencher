@@ -18,12 +18,10 @@ services:
         deploy:
             mode: global
     server-cache:
-        image: nginx:stable
+        image: ${EXPERIMENT_NAME}-cache-initialized
         ports:
         - "4000:80"
         volumes:
-        - ./input/nginx-default:/etc/nginx/sites-enabled/default:ro
-        - ./input/nginx.conf:/etc/nginx/nginx.conf:ro
         - ./output/cache-logs/:/data/log/nginx
         links:
         - server
@@ -40,7 +38,8 @@ services:
             COMUNICA_CONFIG: /tmp/config.json
         command: /tmp/sources.json -p 80 -t ${CLIENT_TIMEOUT} -l info
         links:
-            - server
+        - server
+        - server-cache
         deploy:
             mode: replicated
             restart_policy:
