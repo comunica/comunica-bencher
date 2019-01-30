@@ -20,11 +20,11 @@ This script will do the following:
 * Start a **benchmark runner** that will execute the queries from `input/watdiv-10M`.
 
 Once the benchmark runner is done, the following files will be available:
-* `output/queries.csv`: Query execution time for all queries
-* `output/stats-client.csv`: CPU usage, Memory usage and I/O for the client
-* `output/stats-server.csv`: CPU usage, Memory usage and I/O for the server
-* `output/cache-logs/access.log`: NGINX access log files (including cache `HIT`/`MISS` details)
-* `output/cache-logs/error.log`: NGINX error log files
+* `output/queries.csv`: Query execution time and number of results for all queries.
+* `output/stats-client.csv`: CPU usage, Memory usage and I/O for the client.
+* `output/stats-server.csv`: CPU usage, Memory usage and I/O for the server.
+* `output/cache-logs/access.log`: NGINX access log files (including cache `HIT`/`MISS` details).
+* `output/cache-logs/error.log`: NGINX error log files.
 
 ## Configurability
 
