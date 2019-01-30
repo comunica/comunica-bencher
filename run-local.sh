@@ -1,4 +1,9 @@
 #!/bin/bash
+
+# Prepare the required docker images
+source .env
+bin/build-images.sh $EXPERIMENT_NAME
+
 # Make sure our output file exists
 touch output/queries.csv
 

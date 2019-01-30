@@ -1,0 +1,7 @@
+FROM comunica/actor-init-sparql
+
+ARG CLIENT_CONFIG
+ARG CLIENT_QUERY_SOURCES
+
+ADD $CLIENT_CONFIG /tmp/config.json
+ADD $CLIENT_QUERY_SOURCES /tmp/sources.json

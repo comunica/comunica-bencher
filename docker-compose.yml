@@ -33,7 +33,7 @@ services:
         deploy:
             mode: global
     client:
-        image: comunica/actor-init-sparql
+        image: ${EXPERIMENT_NAME}-comunica-initialized
         ports:
         - "8080:80"
         entrypoint:
@@ -41,9 +41,6 @@ services:
         - ./bin/http.js
         environment:
             COMUNICA_CONFIG: /tmp/config.json
-        volumes:
-        - ${CLIENT_CONFIG}:/tmp/config.json
-        - ${CLIENT_QUERY_SOURCES}:/tmp/sources.json
         command: /tmp/sources.json -p 80 -t ${CLIENT_TIMEOUT} -l info
         links:
             - server
@@ -52,4 +49,3 @@ services:
             restart_policy:
                 condition: none
             replicas: ${CLIENTS}
-
