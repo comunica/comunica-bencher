@@ -1,11 +1,10 @@
 version: '3'
 services:
     benchmark:
-        image: comunica/sparql-benchmark-runner
+        image: ${EXPERIMENT_NAME}-runner-initialized
         volumes:
-        - ${QUERIES}:/tmp/watdiv-10M/
         - ./output/queries.csv:/tmp/output.csv
-        command: http://client:80/sparql /tmp/watdiv-10M/ --output /tmp/output.csv --replication ${REPLICATION} --warmup ${WARMUP_ROUNDS}
+        command: http://client:80/sparql /tmp/queries/ --output /tmp/output.csv --replication ${REPLICATION} --warmup ${WARMUP_ROUNDS}
         depends_on:
         - server
         - server-cache

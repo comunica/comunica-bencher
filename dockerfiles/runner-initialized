@@ -1,0 +1,5 @@
+FROM comunica/sparql-benchmark-runner
+
+ARG QUERIES
+
+ADD $QUERIES /tmp/queries/

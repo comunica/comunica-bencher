@@ -4,18 +4,23 @@
 source .env
 testname=$1
 
+# Build runner
+docker build --quiet --file dockerfiles/runner-initialized \
+    --build-arg QUERIES=$QUERIES \
+    -t $testname-runner-initialized . > /dev/null
+
 # Build server
 docker build --quiet --file dockerfiles/server-initialized \
     --build-arg SERVER_DATASET=$SERVER_DATASET \
     --build-arg SERVER_CONFIG=$SERVER_CONFIG \
-    -t $testname-server-initialized .
+    -t $testname-server-initialized . > /dev/null
 
 # Build cache
 docker build --quiet --file dockerfiles/cache-initialized \
-    -t $testname-cache-initialized .
+    -t $testname-cache-initialized . > /dev/null
 
 # Build comunica client
 docker build --quiet --file dockerfiles/comunica-initialized \
     --build-arg CLIENT_CONFIG=$CLIENT_CONFIG \
     --build-arg CLIENT_QUERY_SOURCES=$CLIENT_QUERY_SOURCES \
-    -t $testname-comunica-initialized .
+    -t $testname-comunica-initialized . > /dev/null
