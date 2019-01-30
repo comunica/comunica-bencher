@@ -9,6 +9,9 @@ services:
         - server
         - server-cache
         - client
+        deploy:
+            restart_policy:
+                condition: none
     server:
         image: comunica-bencher-server:${EXPERIMENT_NAME}
         ports:
