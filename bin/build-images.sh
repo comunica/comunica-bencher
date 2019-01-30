@@ -1,26 +1,27 @@
 #!/bin/bash
 # Builds all required data images
+echo "Building data images"
 
 source .env
 testname=$1
 
 # Build runner
-docker build --quiet --file dockerfiles/runner-initialized \
+docker build --quiet --file dockerfiles/Dockerfile-runner \
     --build-arg QUERIES=$QUERIES \
-    -t $testname-runner-initialized . > /dev/null
+    -t comunica-bencher-runner:$testname . > /dev/null
 
 # Build server
-docker build --quiet --file dockerfiles/server-initialized \
+docker build --quiet --file dockerfiles/Dockerfile-server \
     --build-arg SERVER_DATASET=$SERVER_DATASET \
     --build-arg SERVER_CONFIG=$SERVER_CONFIG \
-    -t $testname-server-initialized . > /dev/null
+    -t comunica-bencher-server:$testname . > /dev/null
 
 # Build cache
-docker build --quiet --file dockerfiles/cache-initialized \
-    -t $testname-cache-initialized . > /dev/null
+docker build --quiet --file dockerfiles/Dockerfile-cache \
+    -t comunica-bencher-cache:$testname . > /dev/null
 
-# Build comunica client
-docker build --quiet --file dockerfiles/comunica-initialized \
+# Build client
+docker build --quiet --file dockerfiles/Dockerfile-client \
     --build-arg CLIENT_CONFIG=$CLIENT_CONFIG \
     --build-arg CLIENT_QUERY_SOURCES=$CLIENT_QUERY_SOURCES \
-    -t $testname-comunica-initialized . > /dev/null
+    -t comunica-bencher-client:$testname . > /dev/null

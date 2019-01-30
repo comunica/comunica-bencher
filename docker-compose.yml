@@ -1,7 +1,7 @@
 version: '3'
 services:
     benchmark:
-        image: ${EXPERIMENT_NAME}-runner-initialized
+        image: comunica-bencher-runner:${EXPERIMENT_NAME}
         volumes:
         - ./output/queries.csv:/tmp/output.csv
         command: http://client:80/sparql /tmp/queries/ --output /tmp/output.csv --replication ${REPLICATION} --warmup ${WARMUP_ROUNDS}
@@ -10,14 +10,14 @@ services:
         - server-cache
         - client
     server:
-        image: ${EXPERIMENT_NAME}-server-initialized
+        image: comunica-bencher-server:${EXPERIMENT_NAME}
         ports:
         - "3000:3000"
         command: /tmp/config.json 3000 ${SERVER_WORKERS}
         deploy:
             mode: global
     server-cache:
-        image: ${EXPERIMENT_NAME}-cache-initialized
+        image: comunica-bencher-cache:${EXPERIMENT_NAME}
         ports:
         - "4000:80"
         volumes:
@@ -27,7 +27,7 @@ services:
         deploy:
             mode: global
     client:
-        image: ${EXPERIMENT_NAME}-comunica-initialized
+        image: comunica-bencher-client:${EXPERIMENT_NAME}
         ports:
         - "8080:80"
         entrypoint:
