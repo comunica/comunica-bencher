@@ -1,0 +1,7 @@
+FROM linkeddatafragments/server.js
+
+ARG SERVER_DATASET
+ARG SERVER_CONFIG
+
+ADD $SERVER_DATASET /data/dataset.hdt
+ADD $SERVER_CONFIG /tmp/config.json

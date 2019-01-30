@@ -11,12 +11,9 @@ services:
         - server-cache
         - client
     server:
-        image: linkeddatafragments/server.js
+        image: ${EXPERIMENT_NAME}-server-initialized
         ports:
         - "3000:3000"
-        volumes:
-        - ${SERVER_DATASET}:/data/dataset.hdt
-        - ${SERVER_CONFIG}:/tmp/config.json
         command: /tmp/config.json 3000 ${SERVER_WORKERS}
         deploy:
             mode: global

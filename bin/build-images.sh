@@ -1,9 +1,17 @@
 #!/bin/bash
-source .env
-
 # Builds all required data images
+
+source .env
 testname=$1
-docker build --file dockerfiles/comunica-initialized \
+
+# Build server
+docker build --quiet --file dockerfiles/server-initialized \
+    --build-arg SERVER_DATASET=$SERVER_DATASET \
+    --build-arg SERVER_CONFIG=$SERVER_CONFIG \
+    -t $testname-server-initialized .
+
+# Build comunica client
+docker build --quiet --file dockerfiles/comunica-initialized \
     --build-arg CLIENT_CONFIG=$CLIENT_CONFIG \
     --build-arg CLIENT_QUERY_SOURCES=$CLIENT_QUERY_SOURCES \
     -t $testname-comunica-initialized .
