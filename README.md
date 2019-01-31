@@ -9,6 +9,27 @@ A set of scripts for easily running benchmarks with [Comunica](https://github.co
 
 ## Usage
 
+This tool should be used in two steps:
+
+* Preparation: Generating a dataset and query set. This should be done only once.
+* Running: Starting the required machines and running the benchmark.
+
+### Preparation
+
+```bash
+$ ./prepare-data.sh
+```
+
+This tool will automatically generate a dataset and query set using [WatDiv](https://dsg.uwaterloo.ca/watdiv/),
+and convert the dataset to HDT.
+
+It will generate the following output:
+* `input/dataset.hdt`: An HDT file that was created from the generated WatDiv dataset.
+* `input/dataset.hdt.index.v1-1`: A corresponding HDT index file.
+* `input/queries/`: A folder containing queries.
+
+### Running
+
 ```bash
 $ ./run-local.sh
 ```
@@ -33,6 +54,8 @@ The following options are available:
 
 | Key                    | Description |
 | ---------------------- | ----------- |
+| `DATASET_SCALE`        | The WatDiv dataset scale (1 ~= 100K triples).  |
+| `QUERY_COUNT`          | The number of queries per category in WatDiv.  |
 | `QUERIES`              | A folder containing queries to execute.  |
 | `REPLICATION`          | The number of times the queries should be executed and averaged over. |
 | `WARMUP_ROUNDS`        | The number of times the queries should be executed as a warmup. |
