@@ -4,4 +4,5 @@ ARG SERVER_DATASET
 ARG SERVER_CONFIG
 
 ADD $SERVER_DATASET /data/dataset.hdt
+ADD $SERVER_DATASET.index.v1-1 /data/dataset.hdt.index.v1-1
 ADD $SERVER_CONFIG /tmp/config.json
