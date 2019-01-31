@@ -8,4 +8,4 @@ docker run --rm -it -v $(pwd)/input/:/output comunica/watdiv -s $DATASET_SCALE -
 docker run --rm -it -v $(pwd)/input/:/output rdfhdt/hdt-cpp rdf2hdt /output/dataset.nt /output/dataset.hdt
 
 # Cleanup the unneeded .nt file
-rm $(pwd)/input.dataset.nt
+rm $(pwd)/input/dataset.nt
