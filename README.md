@@ -95,7 +95,52 @@ Once the benchmark runner is done, the following files will be available:
 
 This tool offers a few commands to analyze and plot the experiment results:
 
-* `comunica-bencher plot queries [experiment1 [experiment2 [...]]]`: Create a vectorial CSV-based (LaTeX/TiKZ) plot (`plot_queries_data.csv` and `plot_queries_data.tex`) comparing the query execution times over all given experiments. This is useful for comparing different approaches with each other.
+#### Plot query execution times
+
+```bash
+$ comunica-bencher plot queries [experiment1 [experiment2 [...]]]
+```
+
+This command will create a vectorial CSV-based (LaTeX/TiKZ) plot that compares the query execution times over all given experiments.
+This is useful for comparing different approaches with each other.
+
+Concretely, it will output the `plot_queries_data.csv` and `plot_queries_data.tex` files.
+These can be included in a LaTeX document, or converted to other formats like SVG and PDF.
+
+#### Calculate stats
+
+```bash
+$ comunica-bencher plot stats <action> experiment
+```
+
+This command allows you to calculate the following statistics over your results:
+
+| Action                 | Description |
+| ---------------------- | ----------- |
+| `all`                  | Print a summary of all results |
+| `cpu-server`           | Print the server's average CPU load (%) |
+| `cpu-server-cache`     | Print the cache server's average CPU load (%) |
+| `cpu-client`           | Print the client's average CPU load (%) |
+| `mem-server`           | Print the server's average memory usage (%) |
+| `mem-server-cache`     | Print the cache server's average memory usage (%) |
+| `mem-client`           | Print the client's average memory usage (%) |
+| `io-server`            | Print the server's total network interface input/output amount |
+| `io-server-cache`      | Print the cache server's total network interface input/output amount |
+| `io-client`            | Print the client's total network interface input/output amount |
+
+For example, `comunica-bencher plot stats all experiment` could output the following
+```
+Stats summary:
+  Server CPU:       10.33%
+  Server cache CPU: 4.66%
+  Client CPU:       97.37%
+  Server mem:       3.17%
+  Server cache mem: 2.25%
+  Client mem:       6.24%
+  Server I/O:       10.7MB / 54.3MB
+  Server cache I/O: 64.5MB / 89MB
+  Client I/O:       78.7MB / 11.2MB
+```
 
 ## Configurability
 

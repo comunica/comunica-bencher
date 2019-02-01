@@ -2,12 +2,14 @@
 # Main bin script for Comunica Bencher
 
 print_usage () {
-    echo "Usage: comunica-bencher <init|prepare-data|run-local>"
+    echo "Usage: comunica-bencher <action>"
+    echo "Actions:"
     echo "  version       Prints the current comunica-bencher version."
     echo "  init          Initializes a new Comunica Bencher experiment."
     echo "  prepare-data  Generates the dataset and queries for an experiment."
     echo "  run-local     Executes the experiment on the current machine."
-    echo "  plot          Generate a TiKZ-based graph."
+    echo "  plot          Generate TiKZ-based graphs."
+    echo "  stats         Analyze the results."
     exit 1
 }
 
@@ -46,6 +48,9 @@ run-local)
     ;;
 plot)
     $lib_dir/plot.sh $remainingargs
+    ;;
+stats)
+    $lib_dir/stats.sh $remainingargs
     ;;
 *)
     echo "Invalid action '$action'"
