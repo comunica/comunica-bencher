@@ -10,7 +10,29 @@ A set of scripts for easily running benchmarks with [Comunica](https://github.co
 
 ## Install
 
-TODO
+### Automatically
+
+This will automatically clone this repo into `$HOME/.comunica-bencher` (_requires [git](https://git-scm.com/)_),
+and adds this tool to your `$PATH`.
+
+```bash
+$ sh -c "`curl -fsSl https://raw.githubusercontent.com/comunica/comunica-bencher/master/install.sh`"
+```
+
+### Manually
+
+First, clone this repo somewhere:
+
+```bash
+$ git clone git@github.com:comunica/comunica-bencher.git
+```
+
+Then, add the `/bin` folder to your `$PATH`.
+For example, by adding the following to your `~/.bash_profile`
+
+```bash
+export PATH="/path/to/comunica-bencher/bin:$PATH"
+```
 
 ## Usage
 
