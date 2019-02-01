@@ -4,20 +4,37 @@ A set of scripts for easily running benchmarks with [Comunica](https://github.co
 
 ## Requirements
 
+* [Bash](https://www.gnu.org/software/bash/) (Installed by default on UNIX machines)
 * [Docker](https://www.docker.com/)
 * [docker-compose](https://docs.docker.com/compose/install/)
 
+## Install
+
+TODO
+
 ## Usage
 
-This tool should be used in two steps:
+This tool should be used in three steps:
 
-* Preparation: Generating a dataset and query set. This should be done only once.
+* Initialization: Create a new experiment. This should be done only once.
+* Data Preparation: Generating a dataset and query set. This should be done only once.
 * Running: Starting the required machines and running the benchmark.
+
+### Initialization
+
+```bash
+$ comunica-bencher init <my-experiment-name>
+```
+
+Running this command will create a new directory with the given name.
+This directory will contain all default required files for running an experiment.
+
+In most cases, you will only need to edit the `.env` file to [configure your experiment](#configurability).
 
 ### Preparation
 
 ```bash
-$ ./prepare-data.sh
+$ comunica-bencher prepare-data
 ```
 
 This tool will automatically generate a dataset and query set using [WatDiv](https://dsg.uwaterloo.ca/watdiv/),
@@ -31,7 +48,7 @@ It will generate the following output:
 ### Running
 
 ```bash
-$ ./run-local.sh
+$ comunica-bencher run-local
 ```
 
 This script will do the following:

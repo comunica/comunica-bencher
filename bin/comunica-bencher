@@ -1,0 +1,46 @@
+#!/bin/bash
+# Main bin script for Comunica Bencher
+
+print_usage () {
+    echo "Usage: comunica-bencher <init|prepare-data|run-local>"
+    echo "  init          Initializes a new Comunica Bencher experiment."
+    echo "  prepare-data  Generates the dataset and queries for an experiment."
+    echo "  run-local     Executes the experiment on the current machine."
+    exit 1
+}
+
+ensure_initialized() {
+    if [[ ! -f .env ]] ; then
+        echo "The current directory is not a valid experiment"
+        echo "First run 'comunica-bencher init', and try again in the created directory"
+        exit 1
+    fi
+}
+
+# Validate input args
+if [[ $# -lt 1 ]] ; then
+    echo "Error: Missing script action"
+    print_usage
+fi
+
+# Execute action
+action=$1
+remainingargs=${@:2}
+lib_dir="$(dirname "${BASH_SOURCE[0]}")/../lib"
+case "$action" in
+init)
+    $lib_dir/init.sh $remainingargs
+    ;;
+prepare-data)
+    ensure_initialized
+    $lib_dir/prepare-data.sh $remainingargs
+    ;;
+run-local)
+    ensure_initialized
+    $lib_dir/run-local.sh $remainingargs
+    ;;
+*)
+    echo "Invalid action '$action'"
+    print_usage
+    ;;
+esac

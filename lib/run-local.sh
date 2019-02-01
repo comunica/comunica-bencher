@@ -1,18 +1,21 @@
 #!/bin/bash
 
+lib_dir="$(dirname "${BASH_SOURCE[0]}")/"
+
 # Prepare the required docker images
 source .env
-bin/build-images.sh $EXPERIMENT_NAME
+$lib_dir/build-images.sh $EXPERIMENT_NAME
 
-# Make sure our output file exists
+# Make sure our output directory and file exists
+mkdir -p output
 touch output/queries.csv
 
 # Start logging
-./bin/stream-docker-stats.sh server &
+$lib_dir/stream-docker-stats.sh server &
 pid_server_logs=$!
-./bin/stream-docker-stats.sh server-cache &
+$lib_dir/stream-docker-stats.sh server-cache &
 pid_server_cache_logs=$!
-./bin/stream-docker-stats.sh client &
+$lib_dir/stream-docker-stats.sh client &
 pid_client_logs=$!
 
 # Start the benchmark

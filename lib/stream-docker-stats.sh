@@ -6,6 +6,7 @@ while [ "$container_id" = "" ]; do
 done
 
 echo "cpu,mem,io" > output/stats-$1.csv
+lib_dir="$(dirname "${BASH_SOURCE[0]}")/"
 while sleep 0.1; do
-    ./bin/get-docker-stats.sh $container_id >> output/stats-$1.csv
+    $lib_dir/get-docker-stats.sh $container_id >> output/stats-$1.csv
 done
