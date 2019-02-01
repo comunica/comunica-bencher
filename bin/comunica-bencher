@@ -3,6 +3,7 @@
 
 print_usage () {
     echo "Usage: comunica-bencher <init|prepare-data|run-local>"
+    echo "  version       Prints the current comunica-bencher version."
     echo "  init          Initializes a new Comunica Bencher experiment."
     echo "  prepare-data  Generates the dataset and queries for an experiment."
     echo "  run-local     Executes the experiment on the current machine."
@@ -28,6 +29,9 @@ action=$1
 remainingargs=${@:2}
 lib_dir="$(dirname "${BASH_SOURCE[0]}")/../lib"
 case "$action" in
+version)
+    cat $lib_dir/../VERSION
+    ;;
 init)
     $lib_dir/init.sh $remainingargs
     ;;
