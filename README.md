@@ -38,14 +38,14 @@ export PATH="/path/to/comunica-bencher/bin:$PATH"
 
 ## Usage
 
-This tool should be used in three steps:
+This tool offers commands for executing the whole experimentation chain:
 
-* **Initialization**: Create a new experiment. This should be done only once.
-* **Data Preparation**: Generating a dataset and query set. This should be done only once.
-* **Running**: Starting the required machines and running the benchmark.
-* **Analysis**: Generating plots and outputting data for result analysis.
+1. [**Initialization**](#1-initialization): Create a new experiment. This should be done only once.
+2. [**Data Preparation**](#2-data-preparation): Generating a dataset and query set. This should be done only once.
+3. [**Running Experiments**](#3-running-experiments): Starting the required machines and running the benchmark.
+4. [**Results Analysis**](#4-results-analysis): Generating plots and outputting data for result analysis.
 
-### Initialization
+### 1. Initialization
 
 ```bash
 $ comunica-bencher init <my-experiment-name>
@@ -57,7 +57,7 @@ You can initialize this directory as a [git](https://git-scm.com/) repository.
 
 In most cases, you will only need to edit the `.env` file to [configure your experiment](#configurability).
 
-### Preparation
+### 2. Data Preparation
 
 ```bash
 $ comunica-bencher prepare-data
@@ -71,7 +71,7 @@ It will generate the following output:
 * `input/dataset.hdt.index.v1-1`: A corresponding HDT index file.
 * `input/queries/`: A folder containing queries.
 
-### Running
+### 3. Running Experiments
 
 ```bash
 $ comunica-bencher run-local
@@ -91,7 +91,7 @@ Once the benchmark runner is done, the following files will be available:
 * `output/cache-logs/access.log`: NGINX access log files (including cache `HIT`/`MISS` details).
 * `output/cache-logs/error.log`: NGINX error log files.
 
-### Analysis
+### 4. Results Analysis
 
 This tool offers a few commands to analyze and plot the experiment results:
 
