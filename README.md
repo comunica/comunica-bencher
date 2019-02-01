@@ -43,6 +43,7 @@ This tool should be used in three steps:
 * **Initialization**: Create a new experiment. This should be done only once.
 * **Data Preparation**: Generating a dataset and query set. This should be done only once.
 * **Running**: Starting the required machines and running the benchmark.
+* **Analysis**: Generating plots and outputting data for result analysis.
 
 ### Initialization
 
@@ -89,6 +90,12 @@ Once the benchmark runner is done, the following files will be available:
 * `output/stats-server-cache.csv`: CPU usage, Memory usage and I/O for the server cache.
 * `output/cache-logs/access.log`: NGINX access log files (including cache `HIT`/`MISS` details).
 * `output/cache-logs/error.log`: NGINX error log files.
+
+### Analysis
+
+This tool offers a few commands to analyze and plot the experiment results:
+
+* `comunica-bencher plot queries [experiment1 [experiment2 [...]]]`: Create a vectorial CSV-based (LaTeX/TiKZ) plot (`plot_queries_data.csv` and `plot_queries_data.tex`) comparing the query execution times over all given experiments. This is useful for comparing different approaches with each other.
 
 ## Configurability
 

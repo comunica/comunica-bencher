@@ -7,6 +7,7 @@ print_usage () {
     echo "  init          Initializes a new Comunica Bencher experiment."
     echo "  prepare-data  Generates the dataset and queries for an experiment."
     echo "  run-local     Executes the experiment on the current machine."
+    echo "  plot          Generate a TiKZ-based graph."
     exit 1
 }
 
@@ -42,6 +43,9 @@ prepare-data)
 run-local)
     ensure_initialized
     $lib_dir/run-local.sh $remainingargs
+    ;;
+plot)
+    $lib_dir/plot.sh $remainingargs
     ;;
 *)
     echo "Invalid action '$action'"
