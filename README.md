@@ -19,6 +19,8 @@ and adds this tool to your `$PATH`.
 $ sh -c "`curl -fsSl https://raw.githubusercontent.com/comunica/comunica-bencher/master/install.sh`"
 ```
 
+If you want to uninstall later, just remove `$HOME/.comunica-bencher` and the `$PATH` modification in `~/.bash_profile`.
+
 ### Manually
 
 First, clone this repo somewhere:
