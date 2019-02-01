@@ -1,10 +1,10 @@
 # Comunica Bencher
 
-A set of scripts for easily running benchmarks with [Comunica](https://github.com/comunica/comunica) and [LDF Server](https://github.com/LinkedDataFragments/Server.js).
+A tool for easily creating and running benchmarks with [Comunica](https://github.com/comunica/comunica) and [LDF Server](https://github.com/LinkedDataFragments/Server.js).
 
 ## Requirements
 
-* [Bash](https://www.gnu.org/software/bash/) (Installed by default on UNIX machines)
+* [Bash](https://www.gnu.org/software/bash/) _(Installed by default on UNIX machines)_
 * [Docker](https://www.docker.com/)
 * [docker-compose](https://docs.docker.com/compose/install/)
 
@@ -40,9 +40,9 @@ export PATH="/path/to/comunica-bencher/bin:$PATH"
 
 This tool should be used in three steps:
 
-* Initialization: Create a new experiment. This should be done only once.
-* Data Preparation: Generating a dataset and query set. This should be done only once.
-* Running: Starting the required machines and running the benchmark.
+* **Initialization**: Create a new experiment. This should be done only once.
+* **Data Preparation**: Generating a dataset and query set. This should be done only once.
+* **Running**: Starting the required machines and running the benchmark.
 
 ### Initialization
 
@@ -52,6 +52,7 @@ $ comunica-bencher init <my-experiment-name>
 
 Running this command will create a new directory with the given name.
 This directory will contain all default required files for running an experiment.
+You can initialize this directory as a [git](https://git-scm.com/) repository.
 
 In most cases, you will only need to edit the `.env` file to [configure your experiment](#configurability).
 
@@ -61,7 +62,7 @@ In most cases, you will only need to edit the `.env` file to [configure your exp
 $ comunica-bencher prepare-data
 ```
 
-This tool will automatically generate a dataset and query set using [WatDiv](https://dsg.uwaterloo.ca/watdiv/),
+This command will automatically generate a dataset and query set using [WatDiv](https://dsg.uwaterloo.ca/watdiv/),
 and convert the dataset to HDT.
 
 It will generate the following output:
@@ -75,11 +76,11 @@ It will generate the following output:
 $ comunica-bencher run-local
 ```
 
-This script will do the following:
-* Start an **LDF server** based on the config in `input/server-config.json` (and dataset `input/dataset.hdt`).
-* Start an **NGINX cache** in front of the LDF server based on the config from `input/nginx.conf` and `input/nginx-default`.
-* Start a **Comunica engine** as SPARQL endpoint, based on the Comunica engine config in `input/client-config`.
-* Start a **benchmark runner** that will execute the queries from `input/watdiv-10M`.
+This command will start the following:
+* **LDF server** based on the config in `input/server-config.json` (and dataset `input/dataset.hdt`).
+* **NGINX cache** in front of the LDF server based on the config from `input/nginx.conf` and `input/nginx-default`.
+* **Comunica engine** as SPARQL endpoint, based on the Comunica engine config in `input/client-config.json`.
+* **Benchmark runner** that will execute the queries from `input/watdiv-10M`.
 
 Once the benchmark runner is done, the following files will be available:
 * `output/queries.csv`: Query execution time and number of results for all queries.
@@ -111,6 +112,15 @@ The following options are available:
 
 By default, the Comunica engine will query the server cache at `http://server-cache:80/dataset`.
 If you want to skip this cache, you can set the source in `input/client-sources.json` to `http://server:3000/dataset` instead.
+
+If you want change more fundamental this to your experiment,
+you can change the following files:
+* `docker-compose.yml`: Instantiation of multiple services for your experiment.
+* `dockerfiles/`: Dockerfiles for the different services that are described in `docker-compose.yml`. These will be built on each experiment run.
+* `input/client-config`: The Comunica config file.
+* `input/client-sources.json`: The context containing the list of sources that Comunica should query with.
+* `input/nginx.conf`, `input/nginx-default`: NGINX configuration.
+* `server-config.json`: LDF server config file.
 
 ## License
 This code is copyrighted by [Ghent University – imec](http://idlab.ugent.be/)
