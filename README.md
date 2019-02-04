@@ -94,7 +94,7 @@ This command will start the following:
 * **LDF server** based on the config in `input/server-config.json` (and dataset `input/dataset.hdt`).
 * **NGINX cache** in front of the LDF server based on the config from `input/nginx.conf` and `input/nginx-default`.
 * **Comunica engine** as SPARQL endpoint, based on the Comunica engine config in `input/client-config.json`.
-* **Benchmark runner** that will execute the queries from `input/watdiv-10M`.
+* **Benchmark runner** that will execute the queries from `input/queries`.
 
 Once the benchmark runner is done, the following files will be available:
 * `output/queries.csv`: Query execution time and number of results for all queries.
