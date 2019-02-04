@@ -90,6 +90,8 @@ Once the benchmark runner is done, the following files will be available:
 * `output/stats-server-cache.csv`: CPU usage, Memory usage and I/O for the server cache.
 * `output/cache-logs/access.log`: NGINX access log files (including cache `HIT`/`MISS` details).
 * `output/cache-logs/error.log`: NGINX error log files.
+* `output/dependencies-client.ttl`: An [RDF representation of all dependencies](https://www.npmjs.com/package/semantic-dependencies) that were available in the client.
+* `output/dependencies-server.ttl`: An [RDF representation of all dependencies](https://www.npmjs.com/package/semantic-dependencies) that were available in the server.
 
 ### 4. Results Analysis
 
