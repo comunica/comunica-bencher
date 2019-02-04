@@ -21,6 +21,20 @@ ensure_initialized() {
     fi
 }
 
+ensure_installed_docker() {
+    if ! docker --version > /dev/null; then
+        echo "Error: This tool requires Docker to be installed."
+        exit 1
+    fi
+}
+
+ensure_installed_docker_compose() {
+    if ! docker-compose --version > /dev/null; then
+        echo "Error: This tool requires docker-compose to be installed."
+        exit 1
+    fi
+}
+
 # Validate input args
 if [[ $# -lt 1 ]] ; then
     echo "Error: Missing script action"
@@ -40,10 +54,13 @@ init)
     ;;
 prepare-data)
     ensure_initialized
+    ensure_installed_docker
     $lib_dir/prepare-data.sh $remainingargs
     ;;
 run-local)
     ensure_initialized
+    ensure_installed_docker
+    ensure_installed_docker_compose
     $lib_dir/run-local.sh $remainingargs
     ;;
 plot)
