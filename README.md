@@ -2,6 +2,19 @@
 
 A tool for easily creating and running benchmarks with [Comunica](https://github.com/comunica/comunica) and [LDF Server](https://github.com/LinkedDataFragments/Server.js).
 
+Experiments that are created and executed with this tool are [fully reproducible](https://linkedsoftwaredependencies.org/articles/reproducibility/),
+as experiments are fully _deterministic_,
+and metadata on all exact installed dependency versions is emitted together with the results.
+
+Together with the (semantic) configuration files of Comunica and LDF Server,
+this tool completes the whole provenance chain of experimental results:
+
+* **Setup** of sofware based on configuration
+* **Generating** experiment input data
+* **Execution** of experiments based on parameters
+* Description of environment **dependencies** during experiments
+* **Reporting** of results
+
 ## Requirements
 
 * [Bash](https://www.gnu.org/software/bash/) _(Installed by default on UNIX machines)_
