@@ -189,6 +189,47 @@ you can change the following files:
 * `input/nginx.conf`, `input/nginx-default`: NGINX configuration.
 * `server-config.json`: LDF server config file.
 
+## Advanced: Matrix Combinations
+
+If you need to compare a large number of combinations over many factors,
+it may be useful to automatically generate separate experiments for each possible combination.
+
+This can be done as follows:
+
+```bash
+$ comunica-bencher gen-matrix matrix-values.json template_experiment
+```
+
+This will generate the experiments `template_experiment_1`, `template_experiment_2`, `template_experiment_3`, ..., `template_experiment_n`.
+With `n` being the total number of combinations.
+
+**Note: this requires [Node.js](https://nodejs.org/en/)**
+
+`matrix-values.json` must be a JSON file containing all factors that need to be combined.
+This must contain an object with factor names, and arrays as values.
+Each value can either by a string or a number.
+For example:
+
+```json
+{
+    "MATRIX_SERVER_WORKERS": [1, 2],
+    "MATRIX_SERVER_TITLE": ["My title 1","My title 2"]
+}
+```
+
+`template_experiment` must be a valid experiment where files can be parameterized with `%PARAMETER_NAME%` references.
+For example, an `.env` file could contain the following:
+
+```
+EXPERIMENT_NAME=template_%MATRIX_ID%
+
+SERVER_DATASET=./input/dataset.hdt
+SERVER_CONFIG=./input/server-config.json
+SERVER_WORKERS=%MATRIX_SERVER_WORKERS%
+```
+
+_(%MATRIX\_ID%) will automatically contain the current combination ID._
+
 ## License
 This code is copyrighted by [Ghent University – imec](http://idlab.ugent.be/)
 and released under the [MIT license](http://opensource.org/licenses/MIT).

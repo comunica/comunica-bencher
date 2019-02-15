@@ -7,6 +7,7 @@ print_usage () {
     echo "  version       Prints the current comunica-bencher version."
     echo "  init          Initializes a new Comunica Bencher experiment."
     echo "  prepare-data  Generates the dataset and queries for an experiment."
+    echo "  gen-matrix    Generates a matrix of experiments."
     echo "  run-local     Executes the experiment on the current machine."
     echo "  plot          Generate TiKZ-based graphs."
     echo "  stats         Analyze the results."
@@ -56,6 +57,9 @@ prepare-data)
     ensure_initialized
     ensure_installed_docker
     $lib_dir/prepare-data.sh $remainingargs
+    ;;
+gen-matrix)
+    node $lib_dir/gen-matrix.js $remainingargs
     ;;
 run-local)
     ensure_initialized
