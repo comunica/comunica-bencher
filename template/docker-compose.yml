@@ -4,7 +4,7 @@ services:
         image: comunica-bencher-runner:${EXPERIMENT_NAME}
         volumes:
         - ./output/queries.csv:/tmp/output.csv
-        command: http://client:80/sparql /tmp/queries/ -o /tmp/output.csv -r ${REPLICATION} -w ${WARMUP_ROUNDS}
+        command: http://client:80/sparql /tmp/queries/ -o /tmp/output.csv -r ${REPLICATION} -w ${WARMUP_ROUNDS} ${RUNNER_ARGS}
         depends_on:
         - server
         - server-cache

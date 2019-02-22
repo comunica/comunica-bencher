@@ -157,6 +157,14 @@ Stats summary:
   Client I/O:       78.7MB / 11.2MB
 ```
 
+#### Diefficiency Metrics
+```bash
+$ comunica-bencher dief time [experiment1 [experiment2 [...]]]
+```
+
+Thiss command will output the [Diefficiency Metrics](https://link.springer.com/chapter/10.1007/978-3-319-68204-4_1) for the given expirements. 
+The output is returned on stdout in csv format so can be piped to a file if required.
+
 ## Configurability
 
 With the `.env` file, you can configure your benchmark.
