@@ -11,6 +11,7 @@ print_usage () {
     echo "  run-local     Executes the experiment on the current machine."
     echo "  plot          Generate TiKZ-based graphs."
     echo "  stats         Analyze the results."
+    echo "  dief          Generate diefficiency metrics."
     exit 1
 }
 
@@ -72,6 +73,9 @@ plot)
     ;;
 stats)
     $lib_dir/stats.sh $remainingargs
+    ;;
+dief)
+    $lib_dir/dief.sh $remainingargs
     ;;
 *)
     echo "Invalid action '$action'"
