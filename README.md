@@ -205,10 +205,10 @@ it may be useful to automatically generate separate experiments for each possibl
 This can be done as follows:
 
 ```bash
-$ comunica-bencher gen-matrix matrix-values.json template_experiment
+$ comunica-bencher gen-matrix matrix-values.json template_experiment my_experiment_
 ```
 
-This will generate the experiments `template_experiment_1`, `template_experiment_2`, `template_experiment_3`, ..., `template_experiment_n`.
+This will generate the experiments `my_experiment_1`, `my_experiment_2`, `my_experiment_3`, ..., `my_experiment_n`.
 With `n` being the total number of combinations.
 
 **Note: this requires [Node.js](https://nodejs.org/en/)**
@@ -236,7 +236,7 @@ SERVER_CONFIG=./input/server-config.json
 SERVER_WORKERS=%MATRIX_SERVER_WORKERS%
 ```
 
-_(%MATRIX\_ID%) will automatically contain the current combination ID._
+_`%MATRIX_ID%` will automatically contain the current combination ID, and `%MATRIX_EXPERIMENT_NAME%` will automatically contain the current experiment name._
 
 ## License
 This code is copyrighted by [Ghent University – imec](http://idlab.ugent.be/)
