@@ -12,4 +12,4 @@ docker run --rm -it -v $(pwd)/input/:/output rdfhdt/hdt-cpp rdf2hdt /output/data
 docker run --rm -it -v $(pwd)/input/:/output rdfhdt/hdt-cpp hdtSearch /output/dataset.hdt -q 0
 
 # Cleanup the unneeded .nt file
-rm $(pwd)/input/dataset.nt
+rm -f $(pwd)/input/dataset.nt
