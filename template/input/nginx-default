@@ -38,7 +38,10 @@ server {
         autoindex_localtime on; 
     } 
 
-    location / { 
+    location / {
+        # Limit rate to 1MB/s
+        limit_rate 1024k;
+
         proxy_pass http://fragments-node$request_uri; 
         proxy_set_header Host $http_host; 
         proxy_pass_header Server; 

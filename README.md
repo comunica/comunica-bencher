@@ -194,7 +194,7 @@ you can change the following files:
 * `dockerfiles/`: Dockerfiles for the different services that are described in `docker-compose.yml`. These will be built on each experiment run.
 * `input/client-config`: The Comunica config file.
 * `input/client-sources.json`: The context containing the list of sources that Comunica should query with.
-* `input/nginx.conf`, `input/nginx-default`: NGINX configuration.
+* `input/nginx.conf`, `input/nginx-default`: NGINX configuration with a default rate limit of 1MB/s.
 * `server-config.json`: LDF server config file.
 
 ## Advanced: Matrix Combinations
