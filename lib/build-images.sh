@@ -28,6 +28,6 @@ docker build --quiet --file dockerfiles/Dockerfile-client \
 
 # Request semantic dependencies of server and client
 docker run --rm --entrypoint "npx" comunica-bencher-server:$testname semantic-dependencies . \
-    > output/dependencies-server.ttl
+    > output/dependencies-server.ttl 2>/dev/null
 docker run --rm --entrypoint "npx" comunica-bencher-client:$testname semantic-dependencies . \
-    > output/dependencies-client.ttl
+    > output/dependencies-client.ttl 2>/dev/null
