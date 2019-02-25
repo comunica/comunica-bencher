@@ -28,3 +28,9 @@ wait $pid_server_logs $pid_server_cache_logs $pid_client_logs 2>/dev/null
 # Cleanup the server and client
 docker-compose --log-level ERROR kill
 docker-compose --log-level ERROR rm -f
+
+# Remove the data images
+docker rmi comunica-bencher-runner:$EXPERIMENT_NAME > /dev/null
+docker rmi comunica-bencher-server:$EXPERIMENT_NAME > /dev/null
+docker rmi comunica-bencher-cache:$EXPERIMENT_NAME > /dev/null
+docker rmi comunica-bencher-client:$EXPERIMENT_NAME > /dev/null
