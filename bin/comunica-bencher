@@ -68,7 +68,7 @@ prepare-data)
         pushd template > /dev/null
         $0 prepare-data
         popd > /dev/null
-        $0 gen-matrix matrix-values.json template combination_
+        $0 gen-matrix
     else
         ensure_initialized
         ensure_installed_docker
@@ -76,7 +76,7 @@ prepare-data)
     fi
     ;;
 gen-matrix)
-    node $lib_dir/gen-matrix.js $remainingargs
+    node $lib_dir/gen-matrix.js matrix-values.json template combination_
     ;;
 run-local)
     # If we have input args, assume that the args are experiments that needs to be run.

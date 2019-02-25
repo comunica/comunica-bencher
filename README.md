@@ -248,7 +248,7 @@ _`%MATRIX_ID%` will automatically contain the current combination ID, and `%MATR
 By running the following command, the matrix combinations will be generated directly without preparing the data.
 
 ```bash
-$ comunica-bencher gen-matrix matrix-values.json template combination_
+$ comunica-bencher gen-matrix
 ```
 
 This will generate the experiments `combination_1`, `combination_2`, `combination_3`, ..., `combination_n`.
