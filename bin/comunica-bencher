@@ -63,6 +63,18 @@ gen-matrix)
     node $lib_dir/gen-matrix.js $remainingargs
     ;;
 run-local)
+    # If we have input args, assume that the args are experiments that needs to be run.
+    # If not, we run the current dir as experiment.
+    if [ $# -ne 1 ]; then
+        for exp in $remainingargs; do
+            echo "Running experiment $exp..."
+            pushd $exp > /dev/null
+            $0 run-local
+            popd > /dev/null
+        done
+        exit 0
+    fi
+
     ensure_initialized
     ensure_installed_docker
     ensure_installed_docker_compose
