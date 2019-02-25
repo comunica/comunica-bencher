@@ -36,7 +36,7 @@ plot_queries () {
         
         # Calculate the average of each query group
         tail -n +2 $experiment/output/queries.csv \
-            | awk -F ';' "{ sum[\$1]+=\$3;cnt[\$1]++ } END { print \"query;$id\"; for (i in sum) print i \";\" sum[i]/cnt[i] }" \
+            | awk -F ';' "{ sum[\$1]+=\$4;cnt[\$1]++ } END { print \"query;$id\"; for (i in sum) print i \";\" sum[i]/cnt[i] }" \
             > .tmp_plot_$id
         
         # Grab keys
