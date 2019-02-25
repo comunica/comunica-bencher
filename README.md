@@ -32,7 +32,7 @@ and adds this tool to your `$PATH`.
 $ sh -c "`curl -fsSl https://raw.githubusercontent.com/comunica/comunica-bencher/master/install.sh`"
 ```
 
-If you want to uninstall later, just remove `$HOME/.comunica-bencher` and the `$PATH` modification in `~/.bash_profile`.
+If you want to uninstall later, just remove `$HOME/.comunica-bencher` and the `$PATH` modification in `~/.bashrc`.
 
 ### Manually
 
@@ -43,7 +43,7 @@ $ git clone git@github.com:comunica/comunica-bencher.git
 ```
 
 Then, add the `/bin` folder to your `$PATH`.
-For example, by adding the following to your `~/.bash_profile`
+For example, by adding the following to your `~/.bashrc`
 
 ```bash
 export PATH="/path/to/comunica-bencher/bin:$PATH"
