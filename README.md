@@ -183,7 +183,7 @@ The following options are available:
 | `CLIENTS`              | The number of concurrent clients. |
 | `CLIENT_CONFIG`        | Path to a Comunica config file. |
 | `CLIENT_QUERY_SOURCES` | Path to a JSON config file containing Comunica context, containing the sources that need to be queried. |
-| `CLIENT_TIMEOUT`       | The query timeout in milliseconds. |
+| `CLIENT_TIMEOUT`       | The query timeout in seconds. |
 
 By default, the Comunica engine will query the server cache at `http://server-cache:80/dataset`.
 If you want to skip this cache, you can set the source in `input/client-sources.json` to `http://server:3000/dataset` instead.
