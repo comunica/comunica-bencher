@@ -211,6 +211,9 @@ $ comunica-bencher gen-matrix matrix-values.json template_experiment my_experime
 This will generate the experiments `my_experiment_1`, `my_experiment_2`, `my_experiment_3`, ..., `my_experiment_n`.
 With `n` being the total number of combinations.
 
+Ideally, this step should be run _after_ data preparation inside the template,
+and _before_ running experiments.
+
 **Note: this requires [Node.js](https://nodejs.org/en/)**
 
 `matrix-values.json` must be a JSON file containing all factors that need to be combined.
