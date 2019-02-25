@@ -202,21 +202,23 @@ you can change the following files:
 If you need to compare a large number of combinations over many factors,
 it may be useful to automatically generate separate experiments for each possible combination.
 
-This can be done as follows:
-
-```bash
-$ comunica-bencher gen-matrix matrix-values.json template_experiment my_experiment_
-```
-
-This will generate the experiments `my_experiment_1`, `my_experiment_2`, `my_experiment_3`, ..., `my_experiment_n`.
-With `n` being the total number of combinations.
-
-Ideally, this step should be run _after_ data preparation inside the template,
-and _before_ running experiments.
+This tool allows you to define a parameterized _template_ experiment,
+and can generate all possible variants of this template as separate experiments.
 
 **Note: this requires [Node.js](https://nodejs.org/en/)**
 
-`matrix-values.json` must be a JSON file containing all factors that need to be combined.
+This can be done as follows:
+
+1. Generate a template experiment: `comunica-bencher init-matrix my-matrix-experiments` (_and run `cd my-matrix-experiments`_).
+2. Define a matrix of combinations by filling in `matrix-values.json`.
+3. Initialize data and combinations by running `comunica-bencher prepare-data`.
+4. Run all combinations sequentually by running `comunica-bencher run-local`.
+
+_Ideally, you should only commit the `template` experiment to a git repo. The matrix combinations can be generated deterministically after cloning._
+
+#### Defining a matrix
+
+`matrix-values.json` is a JSON file containing all factors that need to be combined.
 This must contain an object with factor names, and arrays as values.
 Each value can either by a string or a number.
 For example:
@@ -228,7 +230,7 @@ For example:
 }
 ```
 
-`template_experiment` must be a valid experiment where files can be parameterized with `%PARAMETER_NAME%` references.
+`template` must be a valid experiment where files can be parameterized with `%PARAMETER_NAME%` references.
 For example, an `.env` file could contain the following:
 
 ```
@@ -240,6 +242,17 @@ SERVER_WORKERS=%MATRIX_SERVER_WORKERS%
 ```
 
 _`%MATRIX_ID%` will automatically contain the current combination ID, and `%MATRIX_EXPERIMENT_NAME%` will automatically contain the current experiment name._
+
+#### Generating combinations manually
+
+By running the following command, the matrix combinations will be generated directly without preparing the data.
+
+```bash
+$ comunica-bencher gen-matrix matrix-values.json template combination_
+```
+
+This will generate the experiments `combination_1`, `combination_2`, `combination_3`, ..., `combination_n`.
+With `n` being the total number of combinations.
 
 ## License
 This code is copyrighted by [Ghent University – imec](http://idlab.ugent.be/)

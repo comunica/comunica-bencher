@@ -1,0 +1,4 @@
+{
+    "MATRIX_SERVER_WORKERS": [1, 2],
+    "MATRIX_SERVER_TITLE": ["My title 1","My title 2"]
+}

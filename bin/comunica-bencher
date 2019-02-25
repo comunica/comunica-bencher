@@ -6,6 +6,7 @@ print_usage () {
     echo "Actions:"
     echo "  version       Prints the current comunica-bencher version."
     echo "  init          Initializes a new Comunica Bencher experiment."
+    echo "  init-matrix   Initializes a new Comunica Bencher experiment matrix."
     echo "  prepare-data  Generates the dataset and queries for an experiment."
     echo "  gen-matrix    Generates a matrix of experiments."
     echo "  run-local     Executes the experiment on the current machine."
@@ -13,6 +14,10 @@ print_usage () {
     echo "  stats         Analyze the results."
     echo "  dief          Generate diefficiency metrics."
     exit 1
+}
+
+is_matrix() {
+    [[ -f matrix-values.json && -d template ]]
 }
 
 ensure_initialized() {
@@ -54,10 +59,21 @@ version)
 init)
     $lib_dir/init.sh $remainingargs
     ;;
+init-matrix)
+    $lib_dir/init-matrix.sh $remainingargs
+    ;;
 prepare-data)
-    ensure_initialized
-    ensure_installed_docker
-    $lib_dir/prepare-data.sh $remainingargs
+    if is_matrix; then
+        echo "Detected experiment matrix"
+        pushd template > /dev/null
+        $0 prepare-data
+        popd > /dev/null
+        $0 gen-matrix matrix-values.json template combination_
+    else
+        ensure_initialized
+        ensure_installed_docker
+        $lib_dir/prepare-data.sh $remainingargs
+    fi
     ;;
 gen-matrix)
     node $lib_dir/gen-matrix.js $remainingargs
@@ -72,13 +88,17 @@ run-local)
             $0 run-local
             popd > /dev/null
         done
-        exit 0
+    else
+        if is_matrix; then
+            echo "Detected experiment matrix"
+            $0 run-local combination_*
+        else
+            ensure_initialized
+            ensure_installed_docker
+            ensure_installed_docker_compose
+            $lib_dir/run-local.sh $remainingargs
+        fi
     fi
-
-    ensure_initialized
-    ensure_installed_docker
-    ensure_installed_docker_compose
-    $lib_dir/run-local.sh $remainingargs
     ;;
 plot)
     $lib_dir/plot.sh $remainingargs
