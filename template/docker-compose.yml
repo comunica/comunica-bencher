@@ -35,6 +35,7 @@ services:
         - "8080:80"
         entrypoint:
         - node
+        - --max-old-space-size=8192
         - ./bin/http.js
         environment:
             COMUNICA_CONFIG: /tmp/config.json
