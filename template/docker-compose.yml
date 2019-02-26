@@ -38,7 +38,7 @@ services:
         - ./bin/http.js
         environment:
             COMUNICA_CONFIG: /tmp/config.json
-        command: /tmp/sources.json -p 80 -t ${CLIENT_TIMEOUT} -l info
+        command: /tmp/sources.json -p 80 -t ${CLIENT_TIMEOUT} -l info -i
         links:
         - server
         - server-cache
