@@ -38,6 +38,7 @@ services:
         - --max-old-space-size=8192
         - ./bin/http.js
         environment:
+            NODE_ENV: production
             COMUNICA_CONFIG: /tmp/config.json
         command: /tmp/sources.json -p 80 -t ${CLIENT_TIMEOUT} -l info -i
         links:
