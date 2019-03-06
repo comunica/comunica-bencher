@@ -63,11 +63,11 @@ plot_queries () {
     # Generate TiKZ file
     queries=$(tail -n +2 .tmp_plot_keys | paste -sd "," -)
     legend=$(cat .experiment_names | paste -sd "," -)
-    barlines=$(cat .experiment_ids | sed 's/^\(.*\)$/\\\\addplot\+\[ybar\] table \[x=query\, y expr=\\\\thisrow{\1} \/ 1000, col sep=semicolon\]{plot_queries_data.csv};/g' | tr '\n' ' ')
+    barlines=$(cat .experiment_ids | sed 's/^\(.*\)$/\\\\addplot\+\[ybar\] table \[x=query\, y expr=\\\\thisrow{\1} \/ 1000, col sep=semicolon\]{"plot_queries_data.csv"};/g' | tr '\n' ' ')
     cp $lib_dir/../template_plot/plot_queries_data.tex plot_queries_data.tex
-    sed -i .bak "s/%QUERIES%/$queries/" plot_queries_data.tex
-    sed -i .bak "s/%LEGEND%/$legend/" plot_queries_data.tex
-    sed -i .bak "s@%BARS%@$barlines@" plot_queries_data.tex
+    sed -i.bak "s/%QUERIES%/$queries/" plot_queries_data.tex
+    sed -i.bak "s/%LEGEND%/$legend/" plot_queries_data.tex
+    sed -i.bak "s@%BARS%@$barlines@" plot_queries_data.tex
     rm plot_queries_data.tex.bak
     
     # Remove temp files
