@@ -14,6 +14,7 @@ this tool completes the whole provenance chain of experimental results:
 * **Execution** of experiments based on parameters
 * Description of environment **dependencies** during experiments
 * **Reporting** of results
+* **Archiving** results into a single file for easy exchange
 
 ## Requirements
 
@@ -164,6 +165,22 @@ $ comunica-bencher dief time [experiment1 [experiment2 [...]]]
 
 Thiss command will output the [Diefficiency Metrics](https://link.springer.com/chapter/10.1007/978-3-319-68204-4_1) for the given expirements. 
 The output is returned on stdout in csv format so can be piped to a file if required.
+
+### Optional: exchanging results
+
+If you are running experiments on a remote server,
+but you want to analyze the results locally,
+it is useful to download the experiment results from that server.
+
+Using the following command, you can create a single TAR archive from your experiment results,
+so that it can be downloaded easily to your local machine.
+
+```bash
+$ comunica-bencher collect
+```
+
+This TAR file only includes the required output files,
+so no unneeded experiment input files will be downloaded.
 
 ## Configurability
 

@@ -13,6 +13,7 @@ print_usage () {
     echo "  plot          Generate TiKZ-based graphs."
     echo "  stats         Analyze the results."
     echo "  dief          Generate diefficiency metrics."
+    echo "  collect       Collect all results in a single archive."
     exit 1
 }
 
@@ -108,6 +109,15 @@ stats)
     ;;
 dief)
     $lib_dir/dief.sh $remainingargs
+    ;;
+collect)
+    if is_matrix; then
+        echo "Detected experiment matrix"
+        $lib_dir/collect-results.sh combination_*
+    else
+        ensure_initialized
+        $lib_dir/collect-results.sh .
+    fi
     ;;
 *)
     echo "Invalid action '$action'"
