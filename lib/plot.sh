@@ -46,6 +46,10 @@ plot_queries () {
         if [ -f .tmp_plot_keys ]; then
             if ! cmp -s .tmp_plot_keys .tmp_plot_keys_$id ; then
               echo "Tried to plot experiments with different query sets"
+              echo "  Existing: "
+              cat .tmp_plot_keys
+              echo "  New ($id): "
+              cat .tmp_plot_keys_$id
               exit 1
             fi
         else
@@ -66,7 +70,7 @@ plot_queries () {
     barlines=$(cat .experiment_ids | sed 's/^\(.*\)$/\\\\addplot\+\[ybar\] table \[x=query\, y expr=\\\\thisrow{\1} \/ 1000, col sep=semicolon\]{"plot_queries_data.csv"};/g' | tr '\n' ' ')
     cp $lib_dir/../template_plot/plot_queries_data.tex plot_queries_data.tex
     sed -i.bak "s/%QUERIES%/$queries/" plot_queries_data.tex
-    sed -i.bak "s/%LEGEND%/$legend/" plot_queries_data.tex
+    sed -i.bak "s@%LEGEND%@$legend@" plot_queries_data.tex
     sed -i.bak "s@%BARS%@$barlines@" plot_queries_data.tex
     rm plot_queries_data.tex.bak
     

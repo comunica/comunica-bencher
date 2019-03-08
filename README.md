@@ -260,6 +260,24 @@ SERVER_WORKERS=%MATRIX_SERVER_WORKERS%
 
 _`%MATRIX_ID%` will automatically contain the current combination ID, and `%MATRIX_EXPERIMENT_NAME%` will automatically contain the current experiment name._
 
+##### Optional: Override matrix combination names
+
+Optionally, you can override the names of each combination in a `matrix-names.json` file.
+Custom combination names will be used in graph legends when generating plots.
+
+A `matrix-names.json` file can look as follows:
+```json
+[
+    "A Fast Algorithm",
+    "Another Fast Algorithm",
+    "A Slow Algorithm",
+    "A Very Slow Algorithm",
+]
+```
+
+The contents of this file must always be an array,
+and the length of this array must correspond to the total number of combinations of the matrix.
+
 #### Generating combinations manually
 
 By running the following command, the matrix combinations will be generated directly without preparing the data.

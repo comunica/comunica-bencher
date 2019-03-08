@@ -77,7 +77,7 @@ prepare-data)
     fi
     ;;
 gen-matrix)
-    node $lib_dir/gen-matrix.js matrix-values.json template combination_
+    node $lib_dir/gen-matrix.js matrix-values.json template combination_ matrix-names.json
     ;;
 run-local)
     # If we have input args, assume that the args are experiments that needs to be run.
