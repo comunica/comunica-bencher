@@ -127,9 +127,12 @@ These can be included in a LaTeX document, or converted to other formats like SV
 
 The following options may be provided to customize the plots.
 
+Options always have to be defined _before_ the experiment names.
+
 | Option                 | Description |
 | ---------------------- | ----------- |
 | `-q regex`             | Regex for queries to include. Examples: `'^C'`, `'^[^C]'`, ... |
+| `-n name`              | Custom output file name. Default: `'plot_queries_data'` |
 
 #### Calculate stats
 

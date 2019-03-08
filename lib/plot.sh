@@ -6,6 +6,7 @@ print_usage () {
     echo "  queries       Make a graph with the average query execution times of the given files."
     echo "Options:"
     echo "  -q            Regex for queries to include. Examples: '^C', '^[^C]', ..."
+    echo "  -n            Custom output file name. Default: 'plot_queries_data'"
     exit 1
 }
 
@@ -13,6 +14,7 @@ lib_dir="$(dirname "${BASH_SOURCE[0]}")/"
 
 plot_queries () {
     query_regex=''
+    filename='plot_queries_data'
     
     # For each file, take the average of all query groups, and plot these for all files next to each other.
     touch .experiment_names
@@ -26,6 +28,16 @@ plot_queries () {
         if [[ $set_query_regex == 1 ]]; then
             query_regex=$experiment
             set_query_regex=0
+            continue
+        fi
+        
+        if [[ $experiment == -n ]]; then
+            set_filename=1
+            continue
+        fi
+        if [[ $set_filename == 1 ]]; then
+            filename=$experiment
+            set_filename=0
             continue
         fi
         
@@ -79,24 +91,24 @@ plot_queries () {
     done
     
     # Paste together the CSVs
-    paste -d ';' .tmp_plot_keys .tmp_plot_values_* > plot_queries_data.csv
+    paste -d ';' .tmp_plot_keys .tmp_plot_values_* > $filename.csv
     
     # Generate TiKZ file
     x_limits=$(echo "2*$(cat .experiment_names | wc -l)" | bc) 
     queries=$(tail -n +2 .tmp_plot_keys | paste -sd "," -)
     legend=$(cat .experiment_names | paste -sd "," -)
-    barlines=$(cat .experiment_ids | sed 's/^\(.*\)$/\\\\addplot\+\[ybar\] table \[x=query\, y expr=\\\\thisrow{\1} \/ 1000, col sep=semicolon\]{"plot_queries_data.csv"};/g' | tr '\n' ' ')
-    cp $lib_dir/../template_plot/plot_queries_data.tex plot_queries_data.tex
-    sed -i.bak "s/%X_LIMITS%/$x_limits/" plot_queries_data.tex
-    sed -i.bak "s/%QUERIES%/$queries/" plot_queries_data.tex
-    sed -i.bak "s@%LEGEND%@$legend@" plot_queries_data.tex
-    sed -i.bak "s@%BARS%@$barlines@" plot_queries_data.tex
-    rm plot_queries_data.tex.bak
+    barlines=$(cat .experiment_ids | sed 's/^\(.*\)$/\\\\addplot\+\[ybar\] table \[x=query\, y expr=\\\\thisrow{\1} \/ 1000, col sep=semicolon\]{"'$filename'.csv"};/g' | tr '\n' ' ')
+    cp $lib_dir/../template_plot/plot_queries_data.tex $filename.tex
+    sed -i.bak "s/%X_LIMITS%/$x_limits/" $filename.tex
+    sed -i.bak "s/%QUERIES%/$queries/" $filename.tex
+    sed -i.bak "s@%LEGEND%@$legend@" $filename.tex
+    sed -i.bak "s@%BARS%@$barlines@" $filename.tex
+    rm $filename.tex.bak
     
     # Remove temp files
     rm .experiment_names .experiment_ids .tmp_plot_keys .tmp_plot_keys_* .tmp_plot_values_*
     
-    echo "Generated plot_queries_data.csv and plot_queries_data.tex"
+    echo "Generated $filename.csv and $filename.tex"
 }
 
 # Validate input args
