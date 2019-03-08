@@ -45,6 +45,7 @@ server {
         proxy_pass http://fragments-node$request_uri; 
         proxy_set_header Host $http_host; 
         proxy_pass_header Server; 
+        proxy_read_timeout 6000s;
 
         expires 7d; 
 
