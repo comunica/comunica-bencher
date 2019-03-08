@@ -7,6 +7,7 @@ mkdir -p output
 touch output/queries.csv
 
 # Prepare the required docker images
+dir_name=$(echo ${PWD##*/} | sed "s/\//_/g")
 source .env
 $lib_dir/build-images.sh $EXPERIMENT_NAME
 
@@ -28,6 +29,11 @@ wait $pid_server_logs $pid_server_cache_logs $pid_client_logs 2>/dev/null
 # Cleanup the server and client
 docker-compose --log-level ERROR kill > /dev/null 2>&1
 docker-compose --log-level ERROR rm -f > /dev/null 2>&1
+
+# Remove the created docker networks
+for network in $(docker network ls | grep $dir_name | cut -f1 -d ' '); do
+    docker network rm $network > /dev/null
+done
 
 # Remove the data images
 docker rmi comunica-bencher-runner:$EXPERIMENT_NAME > /dev/null
