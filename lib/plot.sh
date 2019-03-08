@@ -94,12 +94,14 @@ plot_queries () {
     paste -d ';' .tmp_plot_keys .tmp_plot_values_* > $filename.csv
     
     # Generate TiKZ file
-    x_limits=$(echo "2*$(cat .experiment_names | wc -l)" | bc) 
+    x_limits=$(echo "2*$(cat .experiment_names | wc -l)" | bc)
+    width=$(echo "30*($(cat .tmp_plot_keys | wc -l)-1)" | bc)
     queries=$(tail -n +2 .tmp_plot_keys | paste -sd "," -)
     legend=$(cat .experiment_names | paste -sd "," -)
     barlines=$(cat .experiment_ids | sed 's/^\(.*\)$/\\\\addplot\+\[ybar\] table \[x=query\, y expr=\\\\thisrow{\1} \/ 1000, col sep=semicolon\]{"'$filename'.csv"};/g' | tr '\n' ' ')
     cp $lib_dir/../template_plot/plot_queries_data.tex $filename.tex
     sed -i.bak "s/%X_LIMITS%/$x_limits/" $filename.tex
+    sed -i.bak "s/%WIDTH%/$width/" $filename.tex
     sed -i.bak "s/%QUERIES%/$queries/" $filename.tex
     sed -i.bak "s@%LEGEND%@$legend@" $filename.tex
     sed -i.bak "s@%BARS%@$barlines@" $filename.tex
