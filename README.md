@@ -123,6 +123,14 @@ This is useful for comparing different approaches with each other.
 Concretely, it will output the `plot_queries_data.csv` and `plot_queries_data.tex` files.
 These can be included in a LaTeX document, or converted to other formats like SVG and PDF.
 
+##### Plot options
+
+The following options may be provided to customize the plots.
+
+| Option                 | Description |
+| ---------------------- | ----------- |
+| `-q regex`             | Regex for queries to include. Examples: `'^C'`, `'^[^C]'`, ... |
+
 #### Calculate stats
 
 ```bash

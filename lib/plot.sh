@@ -2,18 +2,33 @@
 # Generate TiKZ graphs
 
 print_usage () {
-    echo "Usage: comunica-bencher plot <queries> experimentpath1 [experimentpath2 [...]]"
+    echo "Usage: comunica-bencher plot <queries> [options] experimentpath1 [experimentpath2 [...]]"
     echo "  queries       Make a graph with the average query execution times of the given files."
+    echo "Options:"
+    echo "  -q            Regex for queries to include. Examples: '^C', '^[^C]', ..."
     exit 1
 }
 
 lib_dir="$(dirname "${BASH_SOURCE[0]}")/"
 
 plot_queries () {
+    query_regex=''
+    
     # For each file, take the average of all query groups, and plot these for all files next to each other.
     touch .experiment_names
     touch .experiment_ids
     for experiment in "$@"; do
+        # Handle options
+        if [[ $experiment == -q ]]; then
+            set_query_regex=1
+            continue
+        fi
+        if [[ $set_query_regex == 1 ]]; then
+            query_regex=$experiment
+            set_query_regex=0
+            continue
+        fi
+        
         # Escape experiment name
         id=$(echo $experiment | sed "s/\//_/g")
               
@@ -37,6 +52,8 @@ plot_queries () {
         # Calculate the average of each query group
         tail -n +2 $experiment/output/queries.csv \
             | awk -F ';' "{ sum[\$1]+=\$4;cnt[\$1]++ } END { print \"query;$id\"; for (i in sum) print i \";\" sum[i]/cnt[i] }" \
+            | awk "NR==1 || /^$query_regex/" \
+            | awk 'NR == 1; NR > 1 {print $0 | "sort -n"}' \
             > .tmp_plot_$id
         
         # Grab keys
@@ -65,7 +82,7 @@ plot_queries () {
     paste -d ';' .tmp_plot_keys .tmp_plot_values_* > plot_queries_data.csv
     
     # Generate TiKZ file
-    x_limits=$(echo "2*$(cat .experiment_names | wc -l)" | bc)
+    x_limits=$(echo "2*$(cat .experiment_names | wc -l)" | bc) 
     queries=$(tail -n +2 .tmp_plot_keys | paste -sd "," -)
     legend=$(cat .experiment_names | paste -sd "," -)
     barlines=$(cat .experiment_ids | sed 's/^\(.*\)$/\\\\addplot\+\[ybar\] table \[x=query\, y expr=\\\\thisrow{\1} \/ 1000, col sep=semicolon\]{"plot_queries_data.csv"};/g' | tr '\n' ' ')
