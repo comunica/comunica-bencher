@@ -268,15 +268,17 @@ Custom combination names will be used in graph legends when generating plots.
 A `matrix-names.json` file can look as follows:
 ```json
 [
-    "A Fast Algorithm",
-    "Another Fast Algorithm",
-    "A Slow Algorithm",
-    "A Very Slow Algorithm",
+    "A-Fast-Algorithm",
+    "Another-Fast-Algorithm",
+    "A-Slow-Algorithm",
+    "A-Very-Slow-Algorithm",
 ]
 ```
 
 The contents of this file must always be an array,
 and the length of this array must correspond to the total number of combinations of the matrix.
+
+**Note: Names can not contain special characters or spaces.**
 
 #### Generating combinations manually
 
