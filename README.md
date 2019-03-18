@@ -134,6 +134,50 @@ Options always have to be defined _before_ the experiment names.
 | `-q regex`             | Regex for queries to include. Examples: `'^C'`, `'^[^C]'`, ... |
 | `-n name`              | Custom output file name. Default: `'plot_queries_data'` |
 
+#### Summarize all execution times
+
+```bash
+$ comunica-bencher plot queries_all [experiment1 [experiment2 [...]]]
+```
+
+This command will generate a single CSV file with all query execution results with their corresponding combination id.
+This is useful for executing statistical tests on the results with tools such as R.
+
+Concretely, it will output the `data_all.csv` that looks as follows:
+```csv
+combination;time
+combination_0;10963
+combination_0;10849
+combination_0;11912
+combination_1;16320
+combination_1;12389
+combination_1;11944
+```
+
+You can for example use this data to calculate the statistical different between two combinations in R as follows:
+```R
+data <- read.csv('./data_all.csv', sep = ';')
+
+# Calculate means
+aggregate(data$time, list(data$combination), median)
+
+# Compare means with Kruskal-Wallis test (nonparametric, if non-normal distribution)
+kruskal.test(time ~ combination, data = data[which(data$combination=='combination_0' | data$combination=='combination_1'),])
+# If p < 0.05, combinations have no difference with a significance of 95%.
+# If p > 0.05, combinations are different with a significance of 95%.
+```
+
+##### Plot options
+
+The following options may be provided to customize the plots.
+
+Options always have to be defined _before_ the experiment names.
+
+| Option                 | Description |
+| ---------------------- | ----------- |
+| `-q regex`             | Regex for queries to include. Examples: `'^C'`, `'^[^C]'`, ... |
+| `-n name`              | Custom output file name. Default: `'data_all'` |
+
 #### Calculate stats
 
 ```bash
