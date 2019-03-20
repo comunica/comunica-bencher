@@ -21,7 +21,6 @@ dief () {
         args[((i++))]=$experiment/output/queries.csv
     done
 
-    echo "template;name;id;dief"
     awk -F ';' '
     FNR > 1 {
       {
@@ -40,9 +39,43 @@ dief () {
           
           name = FILENAME;
           gsub(/\/output\/queries.csv/, "", name);
-          printf name ";" $1 ";" $2 ";" dief[FILENAME,$1,$2] "\n"
+
+          combination_count[name";"$1] += 1;
+          combination_sum[name";"$1] += dief[FILENAME,$1,$2];
+          
+          combinations[name] = true;
       }
-    }' ${args[@]}
+    }
+    END {
+        # Calculate averages and max values for scaling to [0,1] range
+        for (key in combination_sum) {
+            average_combination = combination_sum[key] / combination_count[key]
+
+            split(key,split_key,";");
+            query = split_key[2]
+            queries[query] = true;
+            
+            query_combinations[key] = average_combination
+            queries_max[query] = (queries_max[query] > 0 && queries_max[query] < average_combination ? queries_max[query] : average_combination);
+        }
+        
+        # Print header
+        printf "query"
+        for (combination in combinations) {
+            printf ";" combination
+        }
+        printf "\n"
+
+        # Print values
+        for (query in queries) {
+            printf query
+            for (combination in combinations) {
+                key = combination ";" query;
+                printf ";" (query_combinations[key] > 0 ? queries_max[query] / query_combinations[key] : 0)
+            }
+            printf "\n"
+        }
+    }' ${args[@]} | awk 'NR == 1; NR > 1 {print $0 | "sort -n"}'
 }
 
 # Validate input args
