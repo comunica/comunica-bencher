@@ -28,6 +28,41 @@ ensure_experiment_valid() {
     fi
 }
 
+handle_option_filename() {
+    if [[ $experiment == -n ]]; then
+        set_filename=1
+        continue
+    fi
+    if [[ $set_filename == 1 ]]; then
+        filename=$experiment
+        set_filename=0
+        continue
+    fi
+}
+
+handle_option_query_regex() {
+    if [[ $experiment == -q ]]; then
+        set_query_regex=1
+        continue
+    fi
+    if [[ $set_query_regex == 1 ]]; then
+        query_regex=$experiment
+        set_query_regex=0
+        continue
+    fi
+}
+
+load_experiment_data() {
+    # Escape experiment name
+    id=$(echo $experiment | sed "s/\//_/g")
+          
+    # Check if the experiment is valid
+    ensure_experiment_valid $experiment
+    
+    # Load the actual data
+    source $experiment/.env
+}
+
 lib_dir="$(dirname "${BASH_SOURCE[0]}")/"
 
 plot_queries () {
@@ -39,34 +74,11 @@ plot_queries () {
     touch .experiment_ids
     for experiment in "$@"; do
         # Handle options
-        if [[ $experiment == -q ]]; then
-            set_query_regex=1
-            continue
-        fi
-        if [[ $set_query_regex == 1 ]]; then
-            query_regex=$experiment
-            set_query_regex=0
-            continue
-        fi
-        
-        if [[ $experiment == -n ]]; then
-            set_filename=1
-            continue
-        fi
-        if [[ $set_filename == 1 ]]; then
-            filename=$experiment
-            set_filename=0
-            continue
-        fi
-        
-        # Escape experiment name
-        id=$(echo $experiment | sed "s/\//_/g")
-              
-        # Check if the experiment is valid
-        ensure_experiment_valid $experiment
+        handle_option_filename
+        handle_option_query_regex
         
         # Concat experiment name to file
-        source $experiment/.env
+        load_experiment_data
         echo $EXPERIMENT_NAME >> .experiment_names
         echo $id >> .experiment_ids
         
@@ -129,31 +141,11 @@ plot_queries_all () {
     # For each file, take the average of all query groups, and plot these for all files next to each other.
     for experiment in "$@"; do
         # Handle options
-        if [[ $experiment == -q ]]; then
-            set_query_regex=1
-            continue
-        fi
-        if [[ $set_query_regex == 1 ]]; then
-            query_regex=$experiment
-            set_query_regex=0
-            continue
-        fi
+        handle_option_filename
+        handle_option_query_regex
         
-        if [[ $experiment == -n ]]; then
-            set_filename=1
-            continue
-        fi
-        if [[ $set_filename == 1 ]]; then
-            filename=$experiment
-            set_filename=0
-            continue
-        fi
-        
-        # Escape experiment name
-        id=$(echo $experiment | sed "s/\//_/g")
-              
-        # Check if the experiment is valid
-        ensure_experiment_valid $experiment
+        # Load data
+        load_experiment_data
         
         # Grab values
         tail -n +2 $experiment/output/queries.csv | cut -d ';' -f4 > .tmp_plot_values
@@ -183,24 +175,10 @@ plot_query_times () {
     touch .experiment_ids
     for experiment in "$@"; do
         # Handle options        
-        if [[ $experiment == -n ]]; then
-            set_filename=1
-            continue
-        fi
-        if [[ $set_filename == 1 ]]; then
-            filename=$experiment
-            set_filename=0
-            continue
-        fi
-        
-        # Escape experiment name
-        id=$(echo $experiment | sed "s/\//_/g")
-              
-        # Check if the experiment is valid
-        ensure_experiment_valid $experiment
+        handle_option_filename
         
         # Concat experiment name to file
-        source $experiment/.env
+        load_experiment_data
         echo $EXPERIMENT_NAME >> .experiment_names
         echo $id >> .experiment_ids
 
