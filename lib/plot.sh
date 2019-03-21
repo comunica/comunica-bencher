@@ -2,13 +2,30 @@
 # Generate TiKZ graphs
 
 print_usage () {
-    echo "Usage: comunica-bencher plot <queries|queries_all> [options] experimentpath1 [experimentpath2 [...]]"
-    echo "  queries       Make a graph with the average query execution times of the given files."
-    echo "  queries_all   Generate a single CSV file with all query execution results with their corresponding combination id."
+    echo "Usage: comunica-bencher plot <queries|queries_all|query_times> [options] experimentpath1 [experimentpath2 [...]]"
+    echo "  queries                     Make a graph with the average query execution times of the given files."
+    echo "  queries_all                 Generate a single CSV file with all query execution results with their corresponding combination id."
+    echo "  query_times <query-name>    Make a graph showing the query result times for the given files."
     echo "Options:"
-    echo "  -q            Regex for queries to include. Examples: '^C', '^[^C]', ..."
-    echo "  -n            Custom output file name. Default: 'plot_queries_data'"
+    echo "  -q                          Regex for queries to include. Examples: '^C', '^[^C]', ..."
+    echo "  -n                          Custom output file name. Default: 'plot_queries_data'"
     exit 1
+}
+
+ensure_experiment_valid() {
+    experiment=$1
+    
+    # Check if the experiment is valid
+    if [ ! -f $experiment/.env ]; then
+        echo "No valid experiment could be found at '$experiment'."
+        exit 1
+    fi
+    
+    # Check if the experiment contains query output
+    if [ ! -f $experiment/output/queries.csv ]; then
+        echo "No output/queries.csv file could be found in the experiment '$experiment'."
+        exit 1
+    fi
 }
 
 lib_dir="$(dirname "${BASH_SOURCE[0]}")/"
@@ -46,16 +63,7 @@ plot_queries () {
         id=$(echo $experiment | sed "s/\//_/g")
               
         # Check if the experiment is valid
-        if [ ! -f $experiment/.env ]; then
-            echo "No valid experiment could be found at '$experiment'."
-            exit 1
-        fi
-        
-        # Check if the experiment contains query output
-        if [ ! -f $experiment/output/queries.csv ]; then
-            echo "No output/queries.csv file could be found in the experiment '$experiment'."
-            exit 1
-        fi
+        ensure_experiment_valid $experiment
         
         # Concat experiment name to file
         source $experiment/.env
@@ -119,8 +127,6 @@ plot_queries_all () {
     filename='data_all'
     
     # For each file, take the average of all query groups, and plot these for all files next to each other.
-    touch .experiment_names
-    touch .experiment_ids
     for experiment in "$@"; do
         # Handle options
         if [[ $experiment == -q ]]; then
@@ -147,16 +153,7 @@ plot_queries_all () {
         id=$(echo $experiment | sed "s/\//_/g")
               
         # Check if the experiment is valid
-        if [ ! -f $experiment/.env ]; then
-            echo "No valid experiment could be found at '$experiment'."
-            exit 1
-        fi
-        
-        # Check if the experiment contains query output
-        if [ ! -f $experiment/output/queries.csv ]; then
-            echo "No output/queries.csv file could be found in the experiment '$experiment'."
-            exit 1
-        fi
+        ensure_experiment_valid $experiment
         
         # Grab values
         tail -n +2 $experiment/output/queries.csv | cut -d ';' -f4 > .tmp_plot_values
@@ -176,6 +173,62 @@ plot_queries_all () {
     echo "Generated $filename.csv"
 }
 
+plot_query_times () {
+    query=$1
+    shift
+    filename="query_times_$query"
+    
+    # Collect query result times for a specific query in each of the given combinations.
+    touch .experiment_names
+    touch .experiment_ids
+    for experiment in "$@"; do
+        # Handle options        
+        if [[ $experiment == -n ]]; then
+            set_filename=1
+            continue
+        fi
+        if [[ $set_filename == 1 ]]; then
+            filename=$experiment
+            set_filename=0
+            continue
+        fi
+        
+        # Escape experiment name
+        id=$(echo $experiment | sed "s/\//_/g")
+              
+        # Check if the experiment is valid
+        ensure_experiment_valid $experiment
+        
+        # Concat experiment name to file
+        source $experiment/.env
+        echo $EXPERIMENT_NAME >> .experiment_names
+        echo $id >> .experiment_ids
+
+        # Grab values
+        echo $experiment > .times_$experiment.csv
+        for time in $(cat $experiment/output/queries.csv | grep $query | head -n 1 | cut -d ';' -f5); do
+            echo $time >> .times_$experiment.csv
+        done
+    done
+    
+    # Combine columns with result and id
+    paste -d ';' .times_*.csv > $filename.csv
+    
+    # Generate TiKZ file
+    legend=$(cat .experiment_names | paste -sd "," -)
+    lines=$(cat .experiment_ids | sed 's/^\(.*\)$/\\\\addplot\+\[mark=none\] table \[y expr=\\\\coordindex+1\, x=\1, col sep=semicolon\]{"'$filename'.csv"};/g' | tr '\n' ' ')
+    cp $lib_dir/../template_plot/plot_query_times.tex $filename.tex
+    sed -i.bak "s/%QUERIES%/$queries/" $filename.tex
+    sed -i.bak "s@%LEGEND%@$legend@" $filename.tex
+    sed -i.bak "s@%LINES%@$lines@" $filename.tex
+    rm $filename.tex.bak
+    
+    # Remove temp files
+    rm .times_*.csv .experiment_names .experiment_ids
+    
+    echo "Generated $filename.csv and $filename.tex"
+}
+
 # Validate input args
 if [[ $# -lt 1 ]] ; then
     echo "Error: Missing plot action"
@@ -191,6 +244,9 @@ queries)
     ;;
 queries_all)
     plot_queries_all $remainingargs
+    ;;
+query_times)
+    plot_query_times $remainingargs
     ;;
 *)
     echo "Invalid plot action '$action'"

@@ -178,6 +178,29 @@ Options always have to be defined _before_ the experiment names.
 | `-q regex`             | Regex for queries to include. Examples: `'^C'`, `'^[^C]'`, ... |
 | `-n name`              | Custom output file name. Default: `'data_all'` |
 
+#### Plot query result arrival times
+
+```bash
+$ comunica-bencher plot query_times <query> [experiment1 [experiment2 [...]]]
+```
+
+This command will create a vectorial CSV-based (LaTeX/TiKZ) plot that compares compares the query result arrival times over all given experiments.
+This is useful for comparing the impact of different approaches on query result arrival times.
+
+Concretely, it will output the `query_times_<query>.csv` and `query_times_<query>.tex` files.
+These can be included in a LaTeX document, or converted to other formats like SVG and PDF.
+
+##### Plot options
+
+The following options may be provided to customize the plots.
+
+Options always have to be defined _before_ the experiment names.
+
+| Option                 | Description |
+| ---------------------- | ----------- |
+| `-q regex`             | Regex for queries to include. Examples: `'^C'`, `'^[^C]'`, ... |
+| `-n name`              | Custom output file name. Default: `'query_times_<query>'` |
+
 #### Calculate stats
 
 ```bash
