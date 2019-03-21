@@ -35,7 +35,7 @@ dief () {
               dief[FILENAME,$1,$2] += (timestamps[i]-prev) * (i-1);
               prev = timestamps[i];
           }
-          dief[FILENAME,$1,$2] += (time[$1,$2]-prev) * n;
+          dief[FILENAME,$1,$2] += (time[$1,$2]-prev) * (i - 1);
           
           name = FILENAME;
           gsub(/\/output\/queries.csv/, "", name);
@@ -56,7 +56,7 @@ dief () {
             queries[query] = true;
             
             query_combinations[key] = average_combination
-            queries_max[query] = (queries_max[query] > 0 && queries_max[query] < average_combination ? queries_max[query] : average_combination);
+            queries_max[query] = (queries_max[query] > 0 && queries_max[query] > average_combination ? queries_max[query] : average_combination);
         }
         
         # Print header
@@ -71,7 +71,7 @@ dief () {
             printf query
             for (combination in combinations) {
                 key = combination ";" query;
-                printf ";" (query_combinations[key] > 0 ? queries_max[query] / query_combinations[key] : 0)
+                printf ";" (queries_max[query] > 0 ? query_combinations[key] / queries_max[query] : 0)
             }
             printf "\n"
         }
