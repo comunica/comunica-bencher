@@ -6,6 +6,7 @@ print_usage () {
     echo "  queries                     Make a graph with the average query execution times of the given files."
     echo "  queries_all                 Generate a single CSV file with all query execution results with their corresponding combination id."
     echo "  query_times <query-name>    Make a graph showing the query result times for the given files."
+    echo "  dief time                   Plot dief (t) for all queries in the given experiments."
     echo "Options:"
     echo "  -q                          Regex for queries to include. Examples: '^C', '^[^C]', ..."
     echo "  -n                          Custom output file name. Default: 'plot_queries_data'"
@@ -207,6 +208,51 @@ plot_query_times () {
     echo "Generated $filename.csv and $filename.tex"
 }
 
+plot_dief () {
+    dieftype=$1
+    shift
+    filename="dief_$dieftype"
+    
+    # Collect experiment names
+    touch .experiment_names
+    touch .experiment_ids
+    experiments_inline=""
+    for experiment in "$@"; do
+        # Handle options        
+        handle_option_filename
+        
+        # Concat experiment name to file
+        load_experiment_data
+        echo $EXPERIMENT_NAME >> .experiment_names
+        echo $id >> .experiment_ids
+        experiments_inline="$experiments_inline $experiment"
+        
+        cut -d ';' -f1 $experiment/output/queries.csv | tail -n +2 | uniq > .tmp_plot_keys
+    done
+    
+    # Calculate dief
+    $lib_dir/dief.sh $dieftype $experiments_inline > $filename.csv
+    
+    # Generate TiKZ file
+    x_limits=$(echo "2*$(cat .experiment_names | wc -l)" | bc)
+    width=$(echo "30*($(cat .tmp_plot_keys | wc -l)-1)" | bc)
+    queries=$(cat .tmp_plot_keys | paste -sd "," -)
+    legend=$(cat .experiment_names | paste -sd "," -)
+    barlines=$(cat .experiment_ids | sed 's/^\(.*\)$/\\\\addplot\+\[ybar\] table \[x=query\, y=\1, col sep=semicolon\]{"'$filename'.csv"};/g' | tr '\n' ' ')
+    cp $lib_dir/../template_plot/plot_dief.tex $filename.tex
+    sed -i.bak "s/%X_LIMITS%/$x_limits/" $filename.tex
+    sed -i.bak "s/%WIDTH%/$width/" $filename.tex
+    sed -i.bak "s/%QUERIES%/$queries/" $filename.tex
+    sed -i.bak "s@%LEGEND%@$legend@" $filename.tex
+    sed -i.bak "s@%BARS%@$barlines@" $filename.tex
+    rm $filename.tex.bak
+    
+    # Remove temp files
+    rm .experiment_names .experiment_ids .tmp_plot_keys
+    
+    echo "Generated $filename.csv and $filename.tex"
+}
+
 # Validate input args
 if [[ $# -lt 1 ]] ; then
     echo "Error: Missing plot action"
@@ -225,6 +271,9 @@ queries_all)
     ;;
 query_times)
     plot_query_times $remainingargs
+    ;;
+dief)
+    plot_dief $remainingargs
     ;;
 *)
     echo "Invalid plot action '$action'"

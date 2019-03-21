@@ -184,6 +184,30 @@ Options always have to be defined _before_ the experiment names.
 $ comunica-bencher plot query_times <query> [experiment1 [experiment2 [...]]]
 ```
 
+This command will create a vectorial CSV-based (LaTeX/TiKZ) plot that compares the [Diefficiency Metric values](https://link.springer.com/chapter/10.1007/978-3-319-68204-4_1) for all queries in the given experiments.
+This is useful for comparing the impact of different approaches on query result arrival times.
+
+_Higher values mean that results come in at a faster rate._
+
+Concretely, it will output the `dief_time.csv` and `dief_time.tex` files.
+These can be included in a LaTeX document, or converted to other formats like SVG and PDF.
+
+##### Plot options
+
+The following options may be provided to customize the plots.
+
+Options always have to be defined _before_ the experiment names.
+
+| Option                 | Description |
+| ---------------------- | ----------- |
+| `-n name`              | Custom output file name. Default: `'query_times_<query>'` |
+
+#### Plot diefficiency values
+
+```bash
+$ comunica-bencher plot dief time [experiment1 [experiment2 [...]]]
+```
+
 This command will create a vectorial CSV-based (LaTeX/TiKZ) plot that compares compares the query result arrival times over all given experiments.
 This is useful for comparing the impact of different approaches on query result arrival times.
 
