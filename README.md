@@ -133,6 +133,7 @@ Options always have to be defined _before_ the experiment names.
 | ---------------------- | ----------- |
 | `-q regex`             | Regex for queries to include. Examples: `'^C'`, `'^[^C]'`, ... |
 | `-n name`              | Custom output file name. Default: `'plot_queries_data'` |
+| `--no-legend`          | If the legend should be excluded from the plot. |
 
 #### Summarize all execution times
 
@@ -201,6 +202,7 @@ Options always have to be defined _before_ the experiment names.
 | Option                 | Description |
 | ---------------------- | ----------- |
 | `-n name`              | Custom output file name. Default: `'query_times_<query>'` |
+| `--no-legend`          | If the legend should be excluded from the plot. |
 
 #### Plot diefficiency values
 
@@ -224,6 +226,7 @@ Options always have to be defined _before_ the experiment names.
 | ---------------------- | ----------- |
 | `-q regex`             | Regex for queries to include. Examples: `'^C'`, `'^[^C]'`, ... |
 | `-n name`              | Custom output file name. Default: `'query_times_<query>'` |
+| `--no-legend`          | If the legend should be excluded from the plot. |
 
 #### Calculate stats
 
