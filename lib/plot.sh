@@ -11,6 +11,7 @@ print_usage () {
     echo "  -q                          Regex for queries to include. Examples: '^C', '^[^C]', ..."
     echo "  -n                          Custom output file name. Default: 'plot_queries_data'"
     echo "  --no-legend                 If the legend should be excluded from the plot."
+    echo "  --log-y                     If the Y-axis should have a log scale."
     exit 1
 }
 
@@ -61,6 +62,13 @@ handle_flag_legend() {
     fi
 }
 
+handle_flag_log_y() {
+    if [[ $experiment == --log-y ]]; then
+        plot_log_y=true
+        continue
+    fi
+}
+
 load_experiment_data() {
     # Escape experiment name
     id=$(echo $experiment | sed "s/\//_/g")
@@ -78,6 +86,7 @@ plot_queries () {
     query_regex=''
     filename='plot_queries_data'
     plot_legend=true
+    plot_log_y=false
     
     # For each file, take the average of all query groups, and plot these for all files next to each other.
     touch .experiment_names
@@ -87,6 +96,7 @@ plot_queries () {
         handle_option_filename
         handle_option_query_regex
         handle_flag_legend
+        handle_flag_log_y
         
         # Concat experiment name to file
         load_experiment_data
@@ -140,6 +150,9 @@ plot_queries () {
     if ! $plot_legend; then
         sed -i.bak 's@^\\legend.*$@@g' $filename.tex
     fi
+    if $plot_log_y; then
+        sed -i.bak 's@ymin=0,$@ymode=log,log origin=infty,@' $filename.tex
+    fi
     rm $filename.tex.bak
     
     # Remove temp files
@@ -184,6 +197,7 @@ plot_query_times () {
     shift
     filename="query_times_$query"
     plot_legend=true
+    plot_log_y=false
     
     # Collect query result times for a specific query in each of the given combinations.
     touch .experiment_names
@@ -192,6 +206,7 @@ plot_query_times () {
         # Handle options        
         handle_option_filename
         handle_flag_legend
+        handle_flag_log_y
         
         # Concat experiment name to file
         load_experiment_data
@@ -218,6 +233,9 @@ plot_query_times () {
     if ! $plot_legend; then
         sed -i.bak 's@^\\legend.*$@@g' $filename.tex
     fi
+    if $plot_log_y; then
+        sed -i.bak 's@ymin=0,$@ymode=log,log origin=infty,@' $filename.tex
+    fi
     rm $filename.tex.bak
     
     # Remove temp files
@@ -231,6 +249,7 @@ plot_dief () {
     shift
     filename="dief_$dieftype"
     plot_legend=true
+    plot_log_y=false
     
     # Collect experiment names
     touch .experiment_names
@@ -240,6 +259,7 @@ plot_dief () {
         # Handle options        
         handle_option_filename
         handle_flag_legend
+        handle_flag_log_y
         
         # Concat experiment name to file
         load_experiment_data
@@ -267,6 +287,9 @@ plot_dief () {
     sed -i.bak "s@%BARS%@$barlines@" $filename.tex
     if ! $plot_legend; then
         sed -i.bak 's@^\\legend.*$@@g' $filename.tex
+    fi
+    if $plot_log_y; then
+        sed -i.bak 's@ymin=0,$@ymode=log,log origin=infty,@' $filename.tex
     fi
     rm $filename.tex.bak
     
