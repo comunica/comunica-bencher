@@ -133,6 +133,7 @@ Options always have to be defined _before_ the experiment names.
 | ---------------------- | ----------- |
 | `-q regex`             | Regex for queries to include. Examples: `'^C'`, `'^[^C]'`, ... |
 | `-n name`              | Custom output file name. Default: `'plot_queries_data'` |
+| `-c name`              | Path to custom colors file. Default [`'lib/plot_colors.txt'`](https://github.com/comunica/comunica-bencher/blob/master/lib/plot_colors.txt) |
 | `--no-legend`          | If the legend should be excluded from the plot. |
 | `--log-y`              | If the Y-axis should have a log scale. |
 
@@ -203,6 +204,7 @@ Options always have to be defined _before_ the experiment names.
 | Option                 | Description |
 | ---------------------- | ----------- |
 | `-n name`              | Custom output file name. Default: `'query_times_<query>'` |
+| `-c name`              | Path to custom colors file. Default [`'lib/plot_line_colors.txt'`](https://github.com/comunica/comunica-bencher/blob/master/lib/plot_line_colors.txt) |
 | `--no-legend`          | If the legend should be excluded from the plot. |
 | `--log-y`              | If the Y-axis should have a log scale. |
 
@@ -228,6 +230,7 @@ Options always have to be defined _before_ the experiment names.
 | ---------------------- | ----------- |
 | `-q regex`             | Regex for queries to include. Examples: `'^C'`, `'^[^C]'`, ... |
 | `-n name`              | Custom output file name. Default: `'query_times_<query>'` |
+| `-c name`              | Path to custom colors file. Default [`'lib/plot_colors.txt'`](https://github.com/comunica/comunica-bencher/blob/master/lib/plot_colors.txt) |
 | `--no-legend`          | If the legend should be excluded from the plot. |
 | `--log-y`              | If the Y-axis should have a log scale. |
 

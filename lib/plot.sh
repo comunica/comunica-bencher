@@ -10,6 +10,7 @@ print_usage () {
     echo "Options:"
     echo "  -q                          Regex for queries to include. Examples: '^C', '^[^C]', ..."
     echo "  -n                          Custom output file name. Default: 'plot_queries_data'"
+    echo "  -c                          Path to custom colors file. Default 'lib/plot_colors.txt' ('lib/plot_line_colors.txt' for dief)"
     echo "  --no-legend                 If the legend should be excluded from the plot."
     echo "  --log-y                     If the Y-axis should have a log scale."
     exit 1
@@ -55,6 +56,18 @@ handle_option_query_regex() {
     fi
 }
 
+handle_option_colors() {
+    if [[ $experiment == -c ]]; then
+        set_colors=1
+        continue
+    fi
+    if [[ $set_colors == 1 ]]; then
+        colorsfile=$experiment
+        set_colors=0
+        continue
+    fi
+}
+
 handle_flag_legend() {
     if [[ $experiment == --no-legend ]]; then
         plot_legend=false
@@ -87,6 +100,7 @@ plot_queries () {
     filename='plot_queries_data'
     plot_legend=true
     plot_log_y=false
+    colorsfile=$lib_dir/plot_colors.txt
     
     # For each file, take the average of all query groups, and plot these for all files next to each other.
     touch .experiment_names
@@ -95,6 +109,7 @@ plot_queries () {
         # Handle options
         handle_option_filename
         handle_option_query_regex
+        handle_option_colors
         handle_flag_legend
         handle_flag_log_y
         
@@ -141,12 +156,14 @@ plot_queries () {
     queries=$(tail -n +2 .tmp_plot_keys | paste -sd "," -)
     legend=$(cat .experiment_names | paste -sd "," -)
     barlines=$(cat .experiment_ids | sed 's/^\(.*\)$/\\\\addplot\+\[ybar\] table \[x=query\, y expr=\\\\thisrow{\1} \/ 1000, col sep=semicolon\]{"'$filename'.csv"};/g' | tr '\n' ' ')
+    colorlines=$(cat $colorsfile | sed 's/^\(.*\)$/{\1,mark=none},/g' | tr '\n' ' ')
     cp $lib_dir/../template_plot/plot_queries_data.tex $filename.tex
     sed -i.bak "s/%X_LIMITS%/$x_limits/" $filename.tex
     sed -i.bak "s/%WIDTH%/$width/" $filename.tex
     sed -i.bak "s/%QUERIES%/$queries/" $filename.tex
     sed -i.bak "s@%LEGEND%@$legend@" $filename.tex
     sed -i.bak "s@%BARS%@$barlines@" $filename.tex
+    sed -i.bak "s@%COLORS%@$colorlines@" $filename.tex
     if ! $plot_legend; then
         sed -i.bak 's@^\\legend.*$@@g' $filename.tex
     fi
@@ -198,6 +215,7 @@ plot_query_times () {
     filename="query_times_$query"
     plot_legend=true
     plot_log_y=false
+    colorsfile=$lib_dir/plot_colors.txt
     
     # Collect query result times for a specific query in each of the given combinations.
     touch .experiment_names
@@ -205,6 +223,7 @@ plot_query_times () {
     for experiment in "$@"; do
         # Handle options        
         handle_option_filename
+        handle_option_colors
         handle_flag_legend
         handle_flag_log_y
         
@@ -226,10 +245,12 @@ plot_query_times () {
     # Generate TiKZ file
     legend=$(cat .experiment_names | paste -sd "," -)
     lines=$(cat .experiment_ids | sed 's/^\(.*\)$/\\\\addplot\+\[mark=none\] table \[y expr=\\\\coordindex+1\, x=\1, col sep=semicolon\]{"'$filename'.csv"};/g' | tr '\n' ' ')
+    colorlines=$(cat $colorsfile | sed 's/^\(.*\)$/{\1,mark=none},/g' | tr '\n' ' ')
     cp $lib_dir/../template_plot/plot_query_times.tex $filename.tex
     sed -i.bak "s/%QUERIES%/$queries/" $filename.tex
     sed -i.bak "s@%LEGEND%@$legend@" $filename.tex
     sed -i.bak "s@%LINES%@$lines@" $filename.tex
+    sed -i.bak "s@%COLORS%@$colorlines@" $filename.tex
     if ! $plot_legend; then
         sed -i.bak 's@^\\legend.*$@@g' $filename.tex
     fi
@@ -250,6 +271,7 @@ plot_dief () {
     filename="dief_$dieftype"
     plot_legend=true
     plot_log_y=false
+    colorsfile=$lib_dir/plot_line_colors.txt
     
     # Collect experiment names
     touch .experiment_names
@@ -258,6 +280,7 @@ plot_dief () {
     for experiment in "$@"; do
         # Handle options        
         handle_option_filename
+        handle_option_colors
         handle_flag_legend
         handle_flag_log_y
         
@@ -279,12 +302,14 @@ plot_dief () {
     queries=$(cat .tmp_plot_keys | paste -sd "," -)
     legend=$(cat .experiment_names | paste -sd "," -)
     barlines=$(cat .experiment_ids | sed 's/^\(.*\)$/\\\\addplot\+\[ybar\] table \[x=query\, y=\1, col sep=semicolon\]{"'$filename'.csv"};/g' | tr '\n' ' ')
+    colorlines=$(cat $colorsfile | sed 's/^\(.*\)$/{\1,mark=none},/g' | tr '\n' ' ')
     cp $lib_dir/../template_plot/plot_dief.tex $filename.tex
     sed -i.bak "s/%X_LIMITS%/$x_limits/" $filename.tex
     sed -i.bak "s/%WIDTH%/$width/" $filename.tex
     sed -i.bak "s/%QUERIES%/$queries/" $filename.tex
     sed -i.bak "s@%LEGEND%@$legend@" $filename.tex
     sed -i.bak "s@%BARS%@$barlines@" $filename.tex
+    sed -i.bak "s@%COLORS%@$colorlines@" $filename.tex
     if ! $plot_legend; then
         sed -i.bak 's@^\\legend.*$@@g' $filename.tex
     fi

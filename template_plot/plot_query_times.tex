@@ -45,29 +45,8 @@
 \begin{document}
 \pagestyle{empty}
 
-\pgfplotsset{
-  /pgfplots/bar cycle list/.style={/pgfplots/cycle list={%
-      {solid,fill=YellowGreen!70!ForestGreen,mark=none},%
-      {dotted,fill=Goldenrod,mark=none},%
-      {solid,fill=NavyBlue!60,mark=none},%
-      {dotted,fill=VioletRed,mark=none},%
-      {solid,fill=Plum,mark=none},%
-      {dotted,fill=Yellow,mark=none},%
-      {solid,fill=Maroon,mark=none},%
-      {dotted,fill=Blue,mark=none},%
-    }
-  },
-}
-
 \pgfplotscreateplotcyclelist{linecolors}{
-    {solid,YellowGreen!70!ForestGreen,mark=none},%
-    {dotted,Goldenrod,mark=none},%
-    {solid,NavyBlue!60,mark=none},%
-    {dotted,VioletRed,mark=none},%
-    {solid,Plum,mark=none},%
-    {dotted,Yellow,mark=none},%
-    {solid,Maroon,mark=none},%
-    {dotted,Blue,mark=none},%
+    %COLORS%
 }
 
 \newenvironment{resultAxis}{
