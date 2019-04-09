@@ -12,6 +12,7 @@ print_usage () {
     echo "  -n                          Custom output file name. Default: 'plot_queries_data'"
     echo "  -c                          Color scheme name from colorbrewer2.org. Default 'Spectral-<n>'"
     echo "  --no-legend                 If the legend should be excluded from the plot."
+    echo "  --legend-pos 1.0,1.0        The legend position X,Y (anchor north-east)"
     echo "  --log-y                     If the Y-axis should have a log scale."
     exit 1
 }
@@ -57,6 +58,18 @@ handle_option_query_regex() {
 }
 
 handle_option_colors() {
+    if [[ $experiment == --legend-pos ]]; then
+        set_legendpos=1
+        continue
+    fi
+    if [[ $set_legendpos == 1 ]]; then
+        legendpos=$experiment
+        set_legendpos=0
+        continue
+    fi
+}
+
+handle_option_legendpos() {
     if [[ $experiment == -c ]]; then
         set_colors=1
         continue
@@ -107,6 +120,7 @@ plot_queries () {
     filename='plot_queries_data'
     plot_legend=true
     plot_log_y=false
+    legendpos="0.98,0.98"
     
     # For each file, take the average of all query groups, and plot these for all files next to each other.
     touch .experiment_names
@@ -116,6 +130,7 @@ plot_queries () {
         handle_option_filename
         handle_option_query_regex
         handle_option_colors
+        handle_option_legendpos
         handle_flag_legend
         handle_flag_log_y
         
@@ -171,6 +186,7 @@ plot_queries () {
     sed -i.bak "s@%LEGEND%@$legend@" $filename.tex
     sed -i.bak "s@%BARS%@$barlines@" $filename.tex
     sed -i.bak "s@%COLOR_SCHEME%@$colorscheme@" $filename.tex
+    sed -i.bak "s@%LEGEND_POS%@$legendpos@" $filename.tex
     if ! $plot_legend; then
         sed -i.bak 's@^\\legend.*$@@g' $filename.tex
     fi
@@ -278,6 +294,7 @@ plot_dief () {
     filename="dief_$dieftype"
     plot_legend=true
     plot_log_y=false
+    legendpos="0.98,0.98"
     
     # Collect experiment names
     touch .experiment_names
@@ -289,6 +306,7 @@ plot_dief () {
         handle_option_colors
         handle_flag_legend
         handle_flag_log_y
+        handle_option_legendpos
         
         # Concat experiment name to file
         load_experiment_data
@@ -317,6 +335,7 @@ plot_dief () {
     sed -i.bak "s@%LEGEND%@$legend@" $filename.tex
     sed -i.bak "s@%BARS%@$barlines@" $filename.tex
     sed -i.bak "s@%COLOR_SCHEME%@$colorscheme@" $filename.tex
+    sed -i.bak "s@%LEGEND_POS%@$legendpos@" $filename.tex
     if ! $plot_legend; then
         sed -i.bak 's@^\\legend.*$@@g' $filename.tex
     fi
