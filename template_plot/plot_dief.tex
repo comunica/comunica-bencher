@@ -8,16 +8,15 @@
 % Typography
 \usepackage[scaled]{helvet}
 \let\familydefault\sfdefault
+\usepackage{sansmath}
+\sansmath
 
 \usepackage[usenames,svgnames]{xcolor}
 \usepackage{tikz,pgfplots}
 \usetikzlibrary{arrows,positioning,shapes,calc,intersections}
+\usepgfplotslibrary{colorbrewer}
 
-\definecolor{one}  {RGB}{142, 23,  4}
-\definecolor{two}  {RGB}{ 62,111,186}
-\definecolor{three}{RGB}{172,196, 75}
-
-\newcommand\plotfontsize{\fontsize{6}{6}\selectfont}
+\newcommand\plotfontsize{\fontsize{9}{9}\selectfont}
 \pgfplotsset{compat=1.9,
   axis lines=left,
   every axis/.append style={
@@ -27,7 +26,10 @@
     font=\plotfontsize\bfseries,
   },
   tick label style={
-    font=\plotfontsize,
+    font=\plotfontsize\bfseries,
+  },
+  xtick style={
+    draw=none,
   },
   legend cell align=left,
   legend style={
@@ -40,39 +42,38 @@
   log base 10 number format code/.code={%
     $\pgfmathparse{10^(#1)}\pgfmathprintnumber{\pgfmathresult}$%
   },
+  cycle list/%COLOR_SCHEME%,
 }
 
 \begin{document}
 \pagestyle{empty}
 
-\pgfplotsset{
-  /pgfplots/bar cycle list/.style={/pgfplots/cycle list={%
-      %COLORS%
-    }
-  },
-}
-
 \newenvironment{resultAxis}{
 \begin{axis}[
-    xbar=1pt,
     xtick=data,
     width=%WIDTH%pt,
-    height=70pt,
+    height=45pt,
     %ymin=0,
-    bar width=2pt,
+    bar width=2.75pt,
+    xbar=.25pt,
     enlarge x limits={abs=%X_LIMITS%pt},
     symbolic x coords={%QUERIES%},
     % Don't show axis exponent
     %ytick scale label code/.code={},
     %scaled y ticks=false,
-    x axis line style=-,
+    x axis line style={draw=none},
     % reverse legend,
     scale only axis,
     clip=false,
     axis on top,
     area legend,
     ylabel={dief@t},
-    legend style={at={(0.95,1)},anchor=north west}
+    cycle list name=%COLOR_SCHEME%,
+    legend style={at={(0.95,1)},anchor=north west},
+    every axis plot/.append style={
+        draw=none,
+        fill,
+    },
 ]
 }{\end{axis}}
 \begin{tikzpicture}

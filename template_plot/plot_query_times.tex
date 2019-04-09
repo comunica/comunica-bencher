@@ -8,16 +8,15 @@
 % Typography
 \usepackage[scaled]{helvet}
 \let\familydefault\sfdefault
+\usepackage{sansmath}
+\sansmath
 
 \usepackage[usenames,svgnames]{xcolor}
 \usepackage{tikz,pgfplots}
 \usetikzlibrary{arrows,positioning,shapes,calc,intersections}
+\usepgfplotslibrary{colorbrewer}
 
-\definecolor{one}  {RGB}{142, 23,  4}
-\definecolor{two}  {RGB}{ 62,111,186}
-\definecolor{three}{RGB}{172,196, 75}
-
-\newcommand\plotfontsize{\fontsize{6}{6}\selectfont}
+\newcommand\plotfontsize{\fontsize{9}{9}\selectfont}
 \pgfplotsset{compat=1.9,
   axis lines=left,
   every axis/.append style={
@@ -27,7 +26,7 @@
     font=\plotfontsize\bfseries,
   },
   tick label style={
-    font=\plotfontsize,
+    font=\plotfontsize\bfseries,
   },
   legend cell align=left,
   legend style={
@@ -40,20 +39,16 @@
   log base 10 number format code/.code={%
     $\pgfmathparse{10^(#1)}\pgfmathprintnumber{\pgfmathresult}$%
   },
+  cycle list/%COLOR_SCHEME%,
 }
 
 \begin{document}
 \pagestyle{empty}
 
-\pgfplotscreateplotcyclelist{linecolors}{
-    %COLORS%
-}
-
 \newenvironment{resultAxis}{
 \begin{axis}[
-    cycle list name=linecolors,
-    width=300pt,
-    height=70pt,
+    width=350pt,
+    height=96pt,
     xmin=0,
     ymin=0,
     % Don't show axis exponent
@@ -65,6 +60,7 @@
     axis on top,
     xlabel={Time (ms)},
     ylabel={Query results},
+    cycle list name=%COLOR_SCHEME%,
     every axis plot/.append style={line width=1pt},
     legend style={at={(1,0)},anchor=south east}
 ]
