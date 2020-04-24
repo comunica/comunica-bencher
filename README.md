@@ -134,6 +134,7 @@ Options always have to be defined _before_ the experiment names.
 | `-q regex`             | Regex for queries to include. Examples: `'^C'`, `'^[^C]'`, ... |
 | `-n name`              | Custom output file name. Default: `'plot_queries_data'` |
 | `-c name`              | Color scheme name from [colorbrewer2.org](http://colorbrewer2.org/). Default `'Spectral-<n>'` |
+| `--max-y value`        | The upper limit of the Y-axis. Defaults to maximum Y value |
 | `--no-legend`          | If the legend should be excluded from the plot. |
 | `--legend-pos pos`     | The legend position X,Y (anchor north-east). Default: `'1.0,1.0'` |
 | `--log-y`              | If the Y-axis should have a log scale. |
@@ -206,6 +207,7 @@ Options always have to be defined _before_ the experiment names.
 | ---------------------- | ----------- |
 | `-n name`              | Custom output file name. Default: `'query_times_<query>'` |
 | `-c name`              | Color scheme name from [colorbrewer2.org](http://colorbrewer2.org/). Default `'Spectral-<n>'` |
+| `--max-y value`        | The upper limit of the Y-axis. Defaults to maximum Y value |
 | `--no-legend`          | If the legend should be excluded from the plot. |
 | `--log-y`              | If the Y-axis should have a log scale. |
 
@@ -232,6 +234,7 @@ Options always have to be defined _before_ the experiment names.
 | `-q regex`             | Regex for queries to include. Examples: `'^C'`, `'^[^C]'`, ... |
 | `-n name`              | Custom output file name. Default: `'query_times_<query>'` |
 | `-c name`              | Color scheme name from [colorbrewer2.org](http://colorbrewer2.org/). Default `'Spectral-<n>'` |
+| `--max-y value`        | The upper limit of the Y-axis. Defaults to maximum Y value |
 | `--no-legend`          | If the legend should be excluded from the plot. |
 | `--legend-pos pos`     | The legend position X,Y (anchor north-east). Default: `'1.0,1.0'` |
 | `--log-y`              | If the Y-axis should have a log scale. |

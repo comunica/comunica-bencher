@@ -11,6 +11,7 @@ print_usage () {
     echo "  -q                          Regex for queries to include. Examples: '^C', '^[^C]', ..."
     echo "  -n                          Custom output file name. Default: 'plot_queries_data'"
     echo "  -c                          Color scheme name from colorbrewer2.org. Default 'Spectral-<n>'"
+    echo "  --max-y                     The upper limit of the Y-axis. Defaults to maximum Y value"
     echo "  --no-legend                 If the legend should be excluded from the plot."
     echo "  --legend-pos 1.0,1.0        The legend position X,Y (anchor north-east)"
     echo "  --log-y                     If the Y-axis should have a log scale."
@@ -81,6 +82,18 @@ handle_option_legendpos() {
     fi
 }
 
+handle_option_max_y() {
+    if [[ $experiment == --max-y ]]; then
+        set_plot_max_y=1
+        continue
+    fi
+    if [[ $set_plot_max_y == 1 ]]; then
+        plot_max_y=$experiment
+        set_plot_max_y=0
+        continue
+    fi
+}
+
 handle_flag_legend() {
     if [[ $experiment == --no-legend ]]; then
         plot_legend=false
@@ -120,6 +133,7 @@ plot_queries () {
     filename='plot_queries_data'
     plot_legend=true
     plot_log_y=false
+    plot_max_y=false
     legendpos="0.98,0.98"
     
     # For each file, take the average of all query groups, and plot these for all files next to each other.
@@ -131,6 +145,7 @@ plot_queries () {
         handle_option_query_regex
         handle_option_colors
         handle_option_legendpos
+        handle_option_max_y
         handle_flag_legend
         handle_flag_log_y
         
@@ -193,6 +208,9 @@ plot_queries () {
     if $plot_log_y; then
         sed -i.bak 's@ymin=0,$@ymode=log,log origin=infty,@' $filename.tex
     fi
+    if [ $plot_max_y != false ]; then
+        sed -i.bak "s/%Y_MAX%/ymax=$plot_max_y,/" $filename.tex
+    fi
     rm $filename.tex.bak
     
     # Remove temp files
@@ -238,6 +256,7 @@ plot_query_times () {
     filename="query_times_$query"
     plot_legend=true
     plot_log_y=false
+    plot_max_y=false
     
     # Collect query result times for a specific query in each of the given combinations.
     touch .experiment_names
@@ -246,6 +265,7 @@ plot_query_times () {
         # Handle options        
         handle_option_filename
         handle_option_colors
+        handle_option_max_y
         handle_flag_legend
         handle_flag_log_y
         
@@ -280,6 +300,9 @@ plot_query_times () {
     if $plot_log_y; then
         sed -i.bak 's@ymin=0,$@ymode=log,log origin=infty,@' $filename.tex
     fi
+    if $plot_max_y; then
+        sed -i.bak "s/%Y_MAX%/ymax=$plot_max_y,/" $filename.tex
+    fi
     rm $filename.tex.bak
     
     # Remove temp files
@@ -294,6 +317,7 @@ plot_dief () {
     filename="dief_$dieftype"
     plot_legend=true
     plot_log_y=false
+    plot_max_y=false
     legendpos="0.98,0.98"
     
     # Collect experiment names
@@ -304,6 +328,7 @@ plot_dief () {
         # Handle options        
         handle_option_filename
         handle_option_colors
+        handle_option_max_y
         handle_flag_legend
         handle_flag_log_y
         handle_option_legendpos
@@ -341,6 +366,9 @@ plot_dief () {
     fi
     if $plot_log_y; then
         sed -i.bak 's@ymin=0,$@ymode=log,log origin=infty,@' $filename.tex
+    fi
+    if $plot_max_y; then
+        sed -i.bak "s/%Y_MAX%/ymax=$plot_max_y,/" $filename.tex
     fi
     rm $filename.tex.bak
     
