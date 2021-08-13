@@ -1,5 +1,7 @@
 # Comunica Bencher
 
+**This tool is deprecated in favor of [jbr](https://github.com/rubensworks/jbr.js)**
+
 A tool for easily creating and running benchmarks with [Comunica](https://github.com/comunica/comunica) and [LDF Server](https://github.com/LinkedDataFragments/Server.js).
 
 Experiments that are created and executed with this tool are [fully reproducible](https://linkedsoftwaredependencies.org/articles/reproducibility/),
